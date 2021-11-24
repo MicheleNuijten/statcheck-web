@@ -1,0 +1,11 @@
+name: statcheck-web
+title:
+username:
+account: willemsleegers
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5200039
+bundleId: 5290445
+url: https://willemsleegers.shinyapps.io/statcheck-web/
+when: 1637792216.95386
+lastSyncTime: 1637792216.95387

@@ -3,9 +3,10 @@
 
 # Load packages
 library(shiny)
-library(shinythemes)
-# devtools::install_github("MicheleNuijten/statcheck")
 library(statcheck)
+library(pdftools)
+library(htm2txt)
+library(readtext)
 library(DT)
 library(tools)
 
@@ -17,41 +18,48 @@ options(shiny.maxRequestSize = 100 * 1024 ^ 2)
 
 ui <- navbarPage(
     title = "statcheck // web", 
-    theme = shinythemes::shinytheme("cosmo"),
+    collapsible = TRUE,
+    header = tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "css/styles.css")
+    ),
     tabPanel("Home",
-      includeMarkdown("home.md"),
-      hr(),
-      fileInput("file", 
-        label = "Upload files (pdf, html, or docx):",
-        multiple = FALSE,
-        accept = c('pdf/html/docx')
-      ),
-      checkboxInput("one_tail",
-        label = "Try to identify and correct for one-tailed tests?",
-        value = FALSE
-      ),
-      br(),
-      shiny::uiOutput("table"),
-      br(),
-      conditionalPanel(
-        condition = 'output.results',
-        br(),
-        downloadButton('download_data'),
-        br(),
-        br(),
-      ),
-      br(),
-      br()
+      fluidRow(
+        column(12,
+          includeHTML("html/home.html"),
+          hr(),
+          fileInput("file", 
+            label = "Upload files (pdf, html, or docx):",
+            multiple = FALSE,
+            accept = c('pdf/html/docx')
+          ),
+          checkboxInput("one_tail",
+            label = "Try to identify and correct for one-tailed tests?",
+            value = FALSE
+          ),
+          br(),
+          shiny::uiOutput("table"),
+          br(),
+          conditionalPanel(
+            condition = 'output.results',
+            br(),
+            downloadButton('download_data'),
+            br(),
+            br(),
+          ),
+          br(),
+          br()
+        )
+      )
     ),
     tabPanel("Documentation", 
-      includeMarkdown("documentation.md")
+      includeHTML("html/documentation.html")
     ),
     tabPanel("About/FAQ",
-      includeMarkdown("FAQ.md")
+      includeHTML("html/FAQ.html")
     ),
     tabPanel("Contact"),
     tabPanel("MS Word Add-in",
-      includeMarkdown("word-addin.md")
+      includeHTML("html/word-addin.html")
     )
 )
 
@@ -68,18 +76,20 @@ server <- function(input, output) {
     
     # Extract text from the file, depending on the file extension
     if (file_extension == "pdf") {
-      res <- statcheck::checkPDF(input$file$datapath, 
-        OneTailedTests = input$one_tail)
+      text <- pdftools::pdf_text(input$file$datapath)
     } else if (file_extension == "html")  {
-      res <- statcheck::checkHTML(input$file$datapath, 
-        OneTailedTests = input$one_tail)
+      html <- paste(readLines(input$file$datapath), collapse = "\n")
+      text <- htm2txt::htm2txt(html)
     } else if (file_extension == "docx") {
-      error("To do")
+      word <- readtext::readtext(input$file$datapath)
+      text <- word$text
     } else {
       error("Nope.")
     }
     
     # Run statcheck
+    res <- statcheck::statcheck(text, OneTailedTests = input$one_tail)
+    
     return(res)
   })
 
@@ -88,20 +98,20 @@ server <- function(input, output) {
     req(input$file)
 
     res <- results()
-    res$consistency <- ifelse(res$error == FALSE, "Consistent", ifelse(
-      res$decision_error == TRUE, "Decision Inconsistency", "Inconsistency"))
+    res$Error <- ifelse(res$Error == FALSE, "Consistent", ifelse(
+      res$DecisionError == TRUE, "Decision Inconsistency", "Inconsistency"))
     
-    res <- subset(res, select = c(source, raw, computed_p, consistency))
+    res <- subset(res, select = c(Source, Raw, Computed, Error))
     
     # Set the source equal to the file name
-    res$source <- input$file$name
-    
-    # Format the computer p-value column
-    res$computed_p <- sprintf("%.05f", res$computed_p)
+    res$Source <- input$file$name
 
     # Reduce width of long source names
-    res$source[nchar(res$source) > 35] <- gsub("(?<=^.{30}).*", " (...)",  
-        res$source[nchar(res$source) > 35], perl = TRUE)
+    res$Source[nchar(res$Source) > 35] <- gsub("(?<=^.{30}).*", " (...)",  
+        res$Source[nchar(res$Source) > 35], perl = TRUE)
+    
+    # Format the computer p-value column
+    res$Computed <- sprintf("%.05f", res$Computed)
 
     # Create human-friendly column names
     names(res) <- c("Source", "Statistical reference", "Computed p-value",
@@ -126,4 +136,3 @@ server <- function(input, output) {
 # Run application ---------------------------------------------------------
 
 shinyApp(ui = ui, server = server)
-# rsconnect::deployApp()
