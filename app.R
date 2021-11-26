@@ -12,6 +12,7 @@ library(tools)
 
 # Set options
 options(shiny.sanitize.errors = FALSE)
+
 options(shiny.maxRequestSize = 100 * 1024 ^ 2)
 
 # UI ----------------------------------------------------------------------
