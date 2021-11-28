@@ -1,3 +1,17 @@
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.settings {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#table {
+  max-width: 650px;
+}
 
 #logo {
   width: 100%;
@@ -6,6 +20,7 @@
   flex-direction: column;
   webkit-flex-direction: column;
   align-items: center;
+  webkit-align-items: center;
 }
 
 #logo img {
@@ -16,4 +31,12 @@
 #logo p {
   font-size: 3rem;
   font-weight: 500;
+}
+
+#addin {
+  width: 100%;
+}
+
+.panel {
+  max-width: 300px;
 }
