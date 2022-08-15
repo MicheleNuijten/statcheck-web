@@ -40,3 +40,22 @@
 .panel {
   max-width: 300px;
 }
+
+
+.ctrbs li {
+  margin-bottom: 5px;
+}
+
+.ctrb {
+  border-radius: 10px;
+  padding: 3px 6px 3px 6px;
+  margin-left: 3px;
+}
+
+.ctrb-author {
+  background: mediumaquamarine;
+}
+
+.ctrb-creator {
+  background: lightblue;
+}
