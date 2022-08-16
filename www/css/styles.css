@@ -41,6 +41,7 @@
   max-width: 300px;
 }
 
+/* settings for the contributor page */
 
 .ctrbs li {
   margin-bottom: 5px;
@@ -53,9 +54,19 @@
 }
 
 .ctrb-author {
-  background: mediumaquamarine;
+  background: #FA8600;
+  font-weight: 520;
+  color: white;
 }
 
 .ctrb-creator {
-  background: lightblue;
+  background: #FFB701;
+  font-weight: 520;
+  color: white;
+}
+
+.ctrb-contributor {
+  background: #219EBC;
+  font-weight: 520;
+  color: white;
 }
