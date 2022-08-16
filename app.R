@@ -73,6 +73,15 @@ ui <- navbarPage(
         )
       )
     ),
+    tabPanel("Contributors",
+             fluidRow(
+               tags$div(class = "center",
+                        column(10, 
+                               includeHTML("html/contributors.html")
+                        )
+               )
+             )
+    ),
     tabPanel("MS Word Add-in",
       fluidRow(
         tags$div(class = "center",

@@ -40,3 +40,33 @@
 .panel {
   max-width: 300px;
 }
+
+/* settings for the contributor page */
+
+.ctrbs li {
+  margin-bottom: 5px;
+}
+
+.ctrb {
+  border-radius: 10px;
+  padding: 3px 6px 3px 6px;
+  margin-left: 3px;
+}
+
+.ctrb-author {
+  background: #FA8600;
+  font-weight: 520;
+  color: white;
+}
+
+.ctrb-creator {
+  background: #FFB701;
+  font-weight: 520;
+  color: white;
+}
+
+.ctrb-contributor {
+  background: #219EBC;
+  font-weight: 520;
+  color: white;
+}
