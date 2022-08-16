@@ -41,6 +41,11 @@
   max-width: 300px;
 }
 
+#infographic img {
+  width: 100%;
+  max-width: 650px;
+}
+
 /* settings for the contributor page */
 
 .ctrbs li {
