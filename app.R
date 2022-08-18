@@ -46,15 +46,6 @@ ui <- navbarPage(
         )
       )
     ),
-    tabPanel("Documentation", 
-      fluidRow(
-        tags$div(class = "center",
-          column(10, 
-            includeHTML("html/documentation.html")
-          )
-        )
-      )
-    ),
     tabPanel("About/FAQ",
       fluidRow(
         tags$div(class = "center",
