@@ -75,3 +75,62 @@
   font-weight: 520;
   color: white;
 }
+
+/* FAQ */
+
+.panel {
+  box-shadow: none;
+}
+
+.panel-group .panel {
+  border-radius: 0;
+}
+
+.panel-default > .panel-heading {
+  background-color: whitesmoke;
+}
+
+.panel-title {
+  color: #262626;
+  font-size: 13px;
+  width: 100%;
+}
+
+.panel-body {
+  padding: 15px 15px 0 15px;
+}
+
+.panel-body p {
+  margin: 10px 0 10 10px;
+  color: #262626
+}
+
+.panel-body ol {
+  padding-left: 20px;
+}
+
+.panel-body ul {
+  padding-left: 10px;
+}
+
+.collapsible-link {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding-right: 18px;
+}
+
+.collapsible-link::after {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  
+  content: '\f107';
+  transform: translateY(-50%);
+  font-family: 'FontAwesome';
+  font-size: 1.1rem;
+}
+
+.collapsible-link[aria-expanded='true']::after {
+  content: '\f106';
+}

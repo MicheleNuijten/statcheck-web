@@ -1,5 +1,51 @@
 <h1>about statcheck // web</h1>
 
+<!--------------TRY OUT COLLAPSIBLE MENU HERE -------------------->
+
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="collapsible-link" data-toggle="collapse" 
+           data-parent="#accordion" href="#FAQ-collapse1">
+          What is statcheck?
+        </a>
+      </h4>
+    </div>
+    <div id="FAQ-collapse1" class="panel-collapse collapse">
+      <div class="panel-body">
+        <p>
+          <span class="statcheck-FAQ">statcheck</span> is a "spellchecker" for statistics. It checks whether your 
+          <i>p</i>-values match their accompanying test statistic and degrees 
+          of freedom.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse2">
+          How does it work?
+        </a>
+      </h4>
+    </div>
+    <div id="FAQ-collapse2" class="panel-collapse collapse">
+      <div class="panel-body">
+        <p>
+  		    <span class="statcheck-FAQ">statcheck</span> searches for null-hypothesis significance test (NHST) in APA
+  		    style (e.g., t(28) = 2.2, p < .05). It recalculates the <i>p</i>-value
+  		    using the reported test statistic and degrees of freedom. If the
+  		    reported and computed <i>p</i>-values don't match, <span class="statcheck-FAQ">statcheck</span> will flag 
+  		    the result as an error.
+  		    </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 <!------------------------------------------->
 
