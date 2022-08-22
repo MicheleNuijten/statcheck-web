@@ -29,7 +29,7 @@ ui <- navbarPage(
         tags$div(class = "center",
           column(10, 
             includeHTML("html/home.html"),
-            hr(),
+            hr(style="margin-left: 0; width: 100%; max-width: 650px"),
             fileInput("file", 
               label = "Upload files (pdf, html, or docx):",
               multiple = FALSE,
@@ -40,7 +40,7 @@ ui <- navbarPage(
               label = "Try to identify and correct for one-tailed tests?",
               value = FALSE
             ),
-            hr(),
+            hr(style="margin-left: 0; width: 100%; max-width: 650px"),
             shiny::uiOutput("table")
           ) 
         )
