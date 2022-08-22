@@ -41,6 +41,11 @@
   max-width: 300px;
 }
 
+#infographic img {
+  width: 100%;
+  max-width: 650px;
+}
+
 /* settings for the contributor page */
 
 .ctrbs li {
@@ -55,18 +60,77 @@
 
 .ctrb-author {
   background: #FA8600;
-  font-weight: 520;
   color: white;
 }
 
 .ctrb-creator {
   background: #FFB701;
-  font-weight: 520;
   color: white;
 }
 
 .ctrb-contributor {
   background: #219EBC;
-  font-weight: 520;
   color: white;
+}
+
+/* FAQ */
+
+.panel {
+  box-shadow: none;
+}
+
+.panel-group .panel {
+  border-radius: 10px;
+  max-width: 650px;
+}
+
+.panel-default > .panel-heading {
+  background-color: #FFB701;
+}
+
+.panel-title {
+  color: #262626;
+  font-size: 16px;
+  width: 100%;
+}
+
+.panel-body {
+  padding: 15px 15px 0 15px;
+}
+
+.panel-body p {
+  margin: 10px 0 10 10px;
+  color: #262626
+  border-radius: 10px;
+}
+
+.panel-body ol {
+  padding-left: 20px;
+}
+
+.panel-body ul {
+  padding-left: 10px;
+}
+
+.collapsible-link {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding-right: 18px;
+  border-radius: 10px;
+}
+
+.collapsible-link::after {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  
+  content: '\f107';
+  transform: translateY(-50%);
+  font-family: 'FontAwesome';
+  font-size: 1.1rem;
+}
+
+.collapsible-link[aria-expanded='true']::after {
+  content: '\f106';
 }
