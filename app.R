@@ -116,7 +116,7 @@ server <- function(input, output) {
     
     # Check whether any results were found
     validate(
-      need(nrow(res) > 0, "No results found.")
+      need(nrow(res) > 0, "No results found. See the FAQ page for some common reasons why statcheck doesn't detect some results.")
     )
     
     return(res)
