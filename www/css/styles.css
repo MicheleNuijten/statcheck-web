@@ -9,18 +9,21 @@
   font-weight: 700;
 }
 
+.header {
+  margin-bottom: 30px;
+  color: yellow; /* to test if the code works at all*/
+}
+
 #table {
   max-width: 650px;
 }
 
 #logo {
   width: 100%;
-  padding-top: 50px;
+  padding-top: 30px;
   display: flex;
   flex-direction: column;
-  webkit-flex-direction: column;
   align-items: left;
-  webkit-align-items: left;
 }
 
 #logo img {
