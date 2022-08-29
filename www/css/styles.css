@@ -85,15 +85,20 @@ h1 {
 
 .panel {
   box-shadow: none;
+  border-radius: 10px;
 }
 
+/* this controls the border around the panel titles */
 .panel-group .panel {
   border-radius: 10px;
   max-width: 650px;
 }
 
+/* This block only seems to change the contact panel, not faq */
 .panel-default > .panel-heading {
   background-color: #FFC58B;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .panel-title {
@@ -104,12 +109,12 @@ h1 {
 
 .panel-body {
   padding: 15px 15px 0 15px;
+  
 }
 
 .panel-body p {
   margin: 10px 0 10 10px;
   color: #262626
-  border-radius: 10px;
 }
 
 .panel-body ol {
@@ -120,14 +125,15 @@ h1 {
   padding-left: 10px;
 }
 
+/* this is about the little v symbol in the collapsible */
 .collapsible-link {
   display: block;
   position: relative;
   width: 100%;
   padding-right: 18px;
-  border-radius: 10px;
 }
 
+/* this is about the little v symbol in the collapsible */
 .collapsible-link::after {
   position: absolute;
   top: 8px;
@@ -139,6 +145,7 @@ h1 {
   font-size: 1.1rem;
 }
 
+/* this is about the little v symbol in the collapsible */
 .collapsible-link[aria-expanded='true']::after {
   content: '\f106';
 }
