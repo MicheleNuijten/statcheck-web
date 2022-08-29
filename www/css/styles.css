@@ -9,9 +9,8 @@
   font-weight: 700;
 }
 
-.header {
-  margin-bottom: 30px;
-  color: yellow; /* to test if the code works at all*/
+h1 {
+  margin-bottom: 20px;
 }
 
 #table {
