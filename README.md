@@ -24,7 +24,7 @@ statcheck is a "spellchecker" for statistics. It checks whether your p-values ma
 
 The statcheck web app is a simple interface that calls on the statcheck R package in the background. To use the web app, all you need is a working internet connection. You don't need R, or even know how to work with R.
 
-Simply upload a paper in .pdf, .html, or .docx format. Statcheck will search your document for statistics and returns a table with all detected statistics and whether they are internally consistent or not. 
+Simply go to the website at [https://statcheck.io](http://statcheck.io) and upload a paper in .pdf, .html, or .docx format. Statcheck will search your document for statistics and returns a table with all detected statistics and whether they are internally consistent or not. 
 
 # Where can I find more information?
 
@@ -46,3 +46,16 @@ Simply upload a paper in .pdf, .html, or .docx format. Statcheck will search you
         	  compared statcheck's performance with manual checks and assessed 
         	  its accuracy in classifying results as consistent/inconsistent
 
+# Questions and comments
+
+We'd love to get your feedback about the statcheck web app! Please send us
+your questions and suggestions by creating an Issue here on Github; it's really
+easy to do!
+
+You can also contact us on Twitter via
+<a href="http://twitter.com/MicheleNuijten/" target="_blank">@MicheleNuijten</a>.
+
+# Copyright
+
+The statcheck web app is distributed under the MIT license. See the file
+copyright.txt in this repository for more information.
