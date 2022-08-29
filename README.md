@@ -48,12 +48,11 @@ Simply go to the website at [https://statcheck.io](http://statcheck.io) and uplo
 
 # Questions and comments
 
-We'd love to get your feedback about the statcheck web app! Please send us
+Feedback about the statcheck web app is always welcome! Please send
 your questions and suggestions by creating an Issue here on Github; it's really
 easy to do!
 
-You can also contact us on Twitter via
-<a href="http://twitter.com/MicheleNuijten/" target="_blank">@MicheleNuijten</a>.
+You can also send me an <a href="mailto:m.b.nuijten@tilburguniversity.edu">email</a>. 
 
 # Copyright
 
