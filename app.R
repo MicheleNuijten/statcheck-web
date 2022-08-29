@@ -46,7 +46,7 @@ ui <- navbarPage(
         )
       )
     ),
-    tabPanel("About/FAQ",
+    tabPanel("FAQ",
       fluidRow(
         tags$div(class = "center",
           column(10, 
