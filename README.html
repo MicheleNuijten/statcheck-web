@@ -370,6 +370,55 @@ pre code {
 </p>
 <div id="statcheck-on-the-web" class="section level1">
 <h1>statcheck on the web</h1>
+<p>statcheck is a “spellchecker” for statistics. It checks whether your
+p-values match their accompanying test statistic and degrees of freedom.
+statcheck searches for null-hypothesis significance test (NHST) in APA
+style (e.g., t(28) = 2.2, p &lt; .05). It recalculates the p-value using
+the reported test statistic and degrees of freedom. If the reported and
+computed p-values don’t match, statcheck will flag the result as an
+error.</p>
+<p align="center">
+&lt;img max-width=“600px” src=“<a href="https://github.com/MicheleNuijten/statcheck-web/raw/main/www/img/faq-consistent.svg" class="uri">https://github.com/MicheleNuijten/statcheck-web/raw/main/www/img/faq-consistent.svg</a>”</img>
+</p>
+<p align="center">
+&lt;img max-width=“600px” src=“<a href="https://github.com/MicheleNuijten/statcheck-web/raw/main/www/img/faq-inconsistent.svg" class="uri">https://github.com/MicheleNuijten/statcheck-web/raw/main/www/img/faq-inconsistent.svg</a>”</img>
+</p>
+<p align="center">
+&lt;img max-width=“600px” src=“<a href="https://github.com/MicheleNuijten/statcheck-web/raw/main/www/img/faq-decision-inconsistent.svg" class="uri">https://github.com/MicheleNuijten/statcheck-web/raw/main/www/img/faq-decision-inconsistent.svg</a>”</img>
+</p>
+</div>
+<div id="how-can-i-use-the-statcheck-web-app" class="section level1">
+<h1>How can I use the statcheck web app?</h1>
+<p>The statcheck web app is a simple interface that calls on the
+statcheck R package in the background. To use the web app, all you need
+is a working internet connection. You don’t need R, or even know how to
+work with R.</p>
+<p>Simply upload a paper in .pdf, .html, or .docx format. Statcheck will
+search your document for statistics and returns a table with all
+detected statistics and whether they are internally consistent or
+not.</p>
+</div>
+<div id="where-can-i-find-more-information" class="section level1">
+<h1>Where can I find more information?</h1>
+<ul>
+<li><a href="https://rpubs.com/michelenuijten/statcheckmanual" target="_blank">The
+manual</a>: A detailed instruction manual with information on what
+statcheck can and cannot do, information on how to install and use the
+statcheck R package, and more.</li>
+<li><a href="https://github.com/MicheleNuijten/statcheck" target="_blank">The
+GitHub page</a>: Here you can find statcheck’s latest developments.</li>
+<li><a href="http://cran.r-project.org/web/packages/statcheck/" target="_blank">The
+R package</a>: The R package has additional functionality which allows
+you to change more settings and to scan entire folders of papers.</li>
+<li><a href="https://doi.org/10.3758/s13428-015-0664-2" target="_blank">
+The paper</a>: The seminal paper in which statcheck was introduced. We
+ran statcheck on over 30,000 psychology papers and report general
+inconsistency-prevalences over time and per journal.</li>
+<li><a href="https://psyarxiv.com/tcxaj/" target="_blank">The validity
+study</a>: We compared statcheck’s performance with manual checks and
+assessed its accuracy in classifying results as
+consistent/inconsistent</li>
+</ul>
 </div>
 
 
