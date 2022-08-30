@@ -1,18 +1,27 @@
+/* general settings --------------------------------------------------------- */
+
 .center {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.settings {
-  font-size: 14px;
-  font-weight: 700;
-}
+ }
 
 h1 {
   margin-bottom: 20px;
 }
 
+img {
+  width: 100%;
+  max-width: 650px;
+}
+
+#infographic img {
+  width: 100%;
+  max-width: 650px;
+}
+
+/* settings for the home page ----------------------------------------------- */
+  
 #table {
   max-width: 650px;
 }
@@ -20,9 +29,6 @@ h1 {
 #logo {
   width: 100%;
   padding-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 #logo img {
@@ -40,21 +46,82 @@ h1 {
   max-width: 650px;
 }
 
-#addin {
-  width: 100%;
+/* settings for all panels (contact + faq) ---------------------------------- */
+
+.panel {
+    box-shadow: none;
+    border-radius: 20px;
+  }
+
+.panel-default > .panel-heading {
+  background-color: #FFC58B;
+}
+
+.panel-body {
+  padding: 15px 15px 0 15px;
+}
+
+.panel-body p {
+  margin: 10px 0 10 10px;
+  color: #262626
+}
+
+.panel-body ul {
+  padding-left: 10px;
+}
+
+/* settings for FAQ ------------------------------------*/
+
+.accordion {
   max-width: 650px;
 }
 
-.panel {
+.panel-title {
+  color: #262626;
+  font-size: 16px;
+  width: 100%;
+}
+
+.accordion > .panel-default > .panel-heading {
+  border-radius: 20px;
+}
+
+
+/* this is about the little v symbol in the collapsible */
+.collapsible-link {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding-right: 18px;
+}
+  
+.collapsible-link::after {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  
+  content: '\f107';
+  transform: translateY(-50%);
+  font-family: 'FontAwesome';
+  font-size: 1.1rem;
+}
+  
+.collapsible-link[aria-expanded='true']::after {
+  content: '\f106';
+}
+
+/* settings for contact --------------------------------*/
+
+.contact {
   max-width: 300px;
 }
 
-#infographic img {
-  width: 100%;
-  max-width: 650px;
+.contact > .panel-default > .panel-heading {
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 }
 
-/* settings for the contributor page */
+/* settings for contributor page -------------------------------------------- */
 
 .ctrbs li {
   margin-bottom: 5px;
@@ -81,71 +148,22 @@ h1 {
   color: white;
 }
 
-/* FAQ */
+/* old settings that don't seem to do anything or are superfluous --------------
 
-.panel {
-  box-shadow: none;
-  border-radius: 10px;
+.settings {
+  font-size: 14px;
+  font-weight: 700;
 }
 
-/* this controls the border around the panel titles */
-.panel-group .panel {
-  border-radius: 10px;
-  max-width: 650px;
-}
-
-/* This block only seems to change the contact panel, not faq */
-.panel-default > .panel-heading {
-  background-color: #FFC58B;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.panel-title {
-  color: #262626;
-  font-size: 16px;
+#addin {
   width: 100%;
-}
-
-.panel-body {
-  padding: 15px 15px 0 15px;
-  
-}
-
-.panel-body p {
-  margin: 10px 0 10 10px;
-  color: #262626
+  max-width: 650px;
 }
 
 .panel-body ol {
   padding-left: 20px;
 }
 
-.panel-body ul {
-  padding-left: 10px;
-}
 
-/* this is about the little v symbol in the collapsible */
-.collapsible-link {
-  display: block;
-  position: relative;
-  width: 100%;
-  padding-right: 18px;
-}
+*/
 
-/* this is about the little v symbol in the collapsible */
-.collapsible-link::after {
-  position: absolute;
-  top: 8px;
-  right: 0;
-  
-  content: '\f107';
-  transform: translateY(-50%);
-  font-family: 'FontAwesome';
-  font-size: 1.1rem;
-}
-
-/* this is about the little v symbol in the collapsible */
-.collapsible-link[aria-expanded='true']::after {
-  content: '\f106';
-}

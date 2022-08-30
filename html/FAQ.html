@@ -1,30 +1,30 @@
 <h1 class="header">FAQ</h1>
-
-<div class="panel-group" id="accordion">
   
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" 
-           data-parent="#accordion" href="#FAQ-collapse1">
-          What is statcheck?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse1" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>
-          statcheck is a "spellchecker" for statistics. It checks whether your 
+  <div class="accordion">
+    
+    <!------------------------------------------->
+    
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a class="collapsible-link" data-toggle="collapse" 
+          data-parent="#accordion" href="#FAQ-collapse1">
+            What is statcheck?
+            </a>
+            </h4>
+            </div>
+            <div id="FAQ-collapse1" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>
+            statcheck is a "spellchecker" for statistics. It checks whether your 
           <i>p</i>-values match their accompanying test statistic and degrees 
           of freedom. 
-        </p>
-        <p>
-          statcheck searches for null-hypothesis significance test (NHST) in APA
-  		    style (e.g., t(28) = 2.2, p < .05). It recalculates the <i>p</i>-value
-  		    using the reported test statistic and degrees of freedom. If the
-  		    reported and computed <i>p</i>-values don't match, statcheck will flag 
+          </p>
+            <p>
+            statcheck searches for null-hypothesis significance test (NHST) in APA
+          style (e.g., t(28) = 2.2, p < .05). It recalculates the <i>p</i>-value
+          using the reported test statistic and degrees of freedom. If the
+          reported and computed <i>p</i>-values don't match, statcheck will flag 
   		    the result as an error.
         </p>
         <div id="infographic">
@@ -47,30 +47,30 @@
     <div id="FAQ-collapse2" class="panel-collapse collapse">
       <div class="panel-body">
         <p>statcheck recognizes correlations (r) and t, F, &chi;<sup>2</sup>, Z tests and Q tests, as long as they are reported completely (test statistic, degrees of freedom if applicable, and p-value) and in <a href="https://apastyle.apa.org/instructional-aids/numbers-statistics-guide.pdf" target="_blank">APA Style</a>. Statcheck usually can't find statistics in tables.</p>
-
-        <p>statcheck takes into account that test statistics and p values may be exactly (=) or inexactly (< or >) reported. Different spacing has also been taken into account.
-        </p>
-
-        <div id="infographic">
-          <img id="faq-stat-types" src="./img/faq-stat-types.svg" title = "What does statcheck check?">
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse3">
-          How does statcheck flag (in)consistencies?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse3" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>statcheck searches for null-hypothesis significance test (NHST) in APA style (e.g., t(28) = 2.2, p < .05). It recalculates the p-value using the reported test statistic and degrees of freedom. If the reported and computed p-values don't match, statcheck will flag the result as an inconsistency. If the reported p-value is statistically significant (&alpha; = .05) and the recomputed p-value is not, or vice versa, the result is flagged as a decision inconsistency.</p>
+            
+            <p>statcheck takes into account that test statistics and p values may be exactly (=) or inexactly (< or >) reported. Different spacing has also been taken into account.
+          </p>
+            
+            <div id="infographic">
+            <img id="faq-stat-types" src="./img/faq-stat-types.svg" title = "What does statcheck check?">
+            </div>
+            </div>
+            </div>
+            </div>
+            
+            <!------------------------------------------->
+            
+            <div class="panel panel-default">
+            <div class="panel-heading">
+            <h4 class="panel-title">
+            <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse3">
+            How does statcheck flag (in)consistencies?
+            </a>
+            </h4>
+            </div>
+            <div id="FAQ-collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>statcheck searches for null-hypothesis significance test (NHST) in APA style (e.g., t(28) = 2.2, p < .05). It recalculates the p-value using the reported test statistic and degrees of freedom. If the reported and computed p-values don't match, statcheck will flag the result as an inconsistency. If the reported p-value is statistically significant (&alpha; = .05) and the recomputed p-value is not, or vice versa, the result is flagged as a decision inconsistency.</p>
 
         <div id="infographic">
           <img id="faq-inconsistent" src="./img/faq-inconsistent.svg" title = "An inconsistent result">
@@ -130,13 +130,13 @@
       <h4 class="panel-title">
         <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse6">
           Why doesn't statcheck detect my statistics?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse6" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>
-          Some common reasons why statcheck doesn't detect some results:
+            </a>
+            </h4>
+            </div>
+            <div id="FAQ-collapse6" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>
+            Some common reasons why statcheck doesn't detect some results:
         </p>
         
         <ul>
@@ -163,16 +163,16 @@
       <h4 class="panel-title">
         <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse7">
           Why does statcheck say my result is consistent when I think it's not?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse7" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>
-          Note that a seemingly inconsistent p value can still be correct when we take into account that the test statistic might have been rounded after calculating the corresponding p value. For instance, a reported t value of 2.35 could correspond to an actual value of 2.345 to 2.354 with a range of p values that can slightly deviate from the recomputed p value. statcheck will not count cases like this as errors.
-        </p>
-          
-        <p>If you think that statcheck wrongly passed one of your results, please contact us (see below). For more information about statcheck's accuracy, see below.
+            </a>
+            </h4>
+            </div>
+            <div id="FAQ-collapse7" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>
+            Note that a seemingly inconsistent p value can still be correct when we take into account that the test statistic might have been rounded after calculating the corresponding p value. For instance, a reported t value of 2.35 could correspond to an actual value of 2.345 to 2.354 with a range of p values that can slightly deviate from the recomputed p value. statcheck will not count cases like this as errors.
+          </p>
+            
+            <p>If you think that statcheck wrongly passed one of your results, please contact us (see below). For more information about statcheck's accuracy, see below.
         </p>
       </div>
     </div>
@@ -185,21 +185,21 @@
       <h4 class="panel-title">
         <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse8">
           Why does statcheck say my result is inconsistent when I think it's not?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse8" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>
-          statcheck flags result as an error when the reported p-value does not match the recalculated p-value. However, there may be cases in which you deliberately reported an inconsistent result. For example, when you conducted a one-tailed test, reported a Bonferroni corrected p-value, or corrected degrees of freedom.
-        </p>
-        
-        <p>
-          Of course it is also possible that statcheck really made a mistake and erroneously flagged a result as inconsistent. For example, the conversion from PDF (and sometimes also HTML) to plain text and extraction of statistics can result in errors. Some statistical values can be missed, especially if the notation is unconventional.
-        </p>
-        
-        <p>
-          If you think that statcheck wrongly flagged one of your results, please contact us (see below). For more information about statcheck's accuracy, see the next section.
+            </a>
+            </h4>
+            </div>
+            <div id="FAQ-collapse8" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>
+            statcheck flags result as an error when the reported p-value does not match the recalculated p-value. However, there may be cases in which you deliberately reported an inconsistent result. For example, when you conducted a one-tailed test, reported a Bonferroni corrected p-value, or corrected degrees of freedom.
+          </p>
+            
+            <p>
+            Of course it is also possible that statcheck really made a mistake and erroneously flagged a result as inconsistent. For example, the conversion from PDF (and sometimes also HTML) to plain text and extraction of statistics can result in errors. Some statistical values can be missed, especially if the notation is unconventional.
+          </p>
+            
+            <p>
+            If you think that statcheck wrongly flagged one of your results, please contact us (see below). For more information about statcheck's accuracy, see the next section.
         </p>
       </div>
     </div>
@@ -296,11 +296,11 @@
         	<li>
         	  <a href="https://psyarxiv.com/tcxaj/" target="_blank">The validity study</a>: We 
         	  compared statcheck's performance with manual checks and assessed 
-        	  its accuracy in classifying results as consistent/inconsistent
-        	</li>
-        	<li>
-        	  <a href="https://github.com/MicheleNuijten/statcheck" target="_blank">The GitHub 
-        	  page</a>: Here you can find statcheck's latest developments.
+          its accuracy in classifying results as consistent/inconsistent
+          </li>
+            <li>
+            <a href="https://github.com/MicheleNuijten/statcheck" target="_blank">The GitHub 
+          page</a>: Here you can find statcheck's latest developments.
         	</li>
         </ul>
       </div>
