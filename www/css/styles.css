@@ -1,4 +1,9 @@
+
 /* general settings --------------------------------------------------------- */
+
+body {
+  padding-bottom: 5rem;
+}
 
 .center {
   display: flex;
@@ -18,6 +23,10 @@ img {
 #infographic img {
   width: 100%;
   max-width: 650px;
+}
+
+nav {
+  border-bottom: 1px solid lightgray;
 }
 
 /* settings for the home page ----------------------------------------------- */
