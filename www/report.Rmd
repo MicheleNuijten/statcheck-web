@@ -1,0 +1,19 @@
+---
+title: "Report"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+params:
+  df: NA
+output:
+  pdf_document:
+    latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## statcheck results
+
+```{r}
+knitr::kable(params$df)
+```

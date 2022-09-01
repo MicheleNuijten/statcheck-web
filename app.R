@@ -14,6 +14,22 @@ library(tools)
 options(shiny.sanitize.errors = FALSE)
 options(shiny.maxRequestSize = 100 * 1024 ^ 2)
 
+# Custom functions
+clean_df <- function(res) {
+  res$Error <- ifelse(res$Error == FALSE, "Consistent", ifelse(
+  res$DecisionError == TRUE, "Decision Inconsistency", "Inconsistency"))
+  
+  res <- subset(res, select = c(Raw, Computed, Error))
+  
+  # Format the computer p-value column
+  res$Computed <- sprintf("%.05f", res$Computed)
+  
+  # Create human-friendly column names
+  names(res) <- c("Statistical reference", "Computed p-value", "Consistency")
+  
+  return(res)
+}
+
 # UI ----------------------------------------------------------------------
 
 ui <- navbarPage(
@@ -41,7 +57,13 @@ ui <- navbarPage(
               value = FALSE
             ),
             hr(style="margin-left: 0; width: 100%; max-width: 650px"),
-            shiny::uiOutput("table")
+            shiny::uiOutput("table"),
+            conditionalPanel(
+              condition = "output.results",
+              downloadButton("downloadDataCSV", "Download CSV"),
+              downloadButton("downloadDataPDF", "Download PDF")
+            )
+            
           ) 
         )
       )
@@ -122,38 +144,39 @@ server <- function(input, output) {
     return(res)
   })
 
-  # Detailed:
+  # Output: Table with the output of statcheck
   output$results <- DT::renderDataTable(
     extensions = "Buttons", 
     options = list(
       dom = 'Bfrtip',
       buttons = 
-        list('copy', 'print', list(
-          extend = 'collection',
-          buttons = list(
-            list(extend = 'csv', filename = input$file$name),
-            list(extend = 'excel', filename = input$file$name),
-            list(extend = 'pdf', filename = input$file$name)
+        list(
+          'copy', 
+          'print', 
+          list(
+            extend = 'collection',
+            buttons = list(
+              list(extend = 'csv', filename = input$file$name),
+              list(extend = 'excel', filename = input$file$name),
+              list(extend = 'pdf', filename = input$file$name)
+            ),
+            text = 'Download'
           ),
-          text = 'Download'
-        )
+          list(
+            extend = "collection", 
+            text = 'test',
+            action = DT::JS("function ( e ) {
+                  console.log(e);
+                  Shiny.setInputValue('btn_open', {priority: 'event'});
+                    }")
+          )
       )
-    ),
-    {
+    ), {
       req(input$file)
   
       res <- results()
       
-      res$Error <- ifelse(res$Error == FALSE, "Consistent", ifelse(
-      res$DecisionError == TRUE, "Decision Inconsistency", "Inconsistency"))
-    
-      res <- subset(res, select = c(Raw, Computed, Error))
-      
-      # Format the computer p-value column
-      res$Computed <- sprintf("%.05f", res$Computed)
-  
-      # Create human-friendly column names
-      names(res) <- c("Statistical reference", "Computed p-value", "Consistency")
+      res <- clean_df(res)
   
       return(res)
     }
@@ -162,6 +185,40 @@ server <- function(input, output) {
   output$table <- renderUI({
     div(DT::dataTableOutput("results"))
   })
+  
+  
+  output$downloadDataCSV <- downloadHandler(
+    filename = function() {
+      paste("statcheck-", input$file, ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(clean_df(results()), file, row.names = FALSE)
+    }
+  )
+  
+  output$downloadDataPDF <- downloadHandler(
+    filename = function() {
+      paste("statcheck-", input$file, ".pdf", sep = "")
+    },
+    content = function(file) {
+      src <- normalizePath('www/report.Rmd')
+      
+      # temporarily switch to the temp dir
+      owd <- setwd(tempdir())
+      on.exit(setwd(owd))
+      file.copy(src, 'report.Rmd', overwrite = TRUE)
+      
+      library(rmarkdown)
+      df <- clean_df(results())
+      
+      # Replace χ to prevent an issue with Latex
+      df$`Statistical reference` <- gsub("χ", "chi", df$`Statistical reference`)
+
+      params <- list(df = df)
+      out <- render('report.Rmd', pdf_document(), params = params, envir = new.env())
+      file.rename(out, file)
+    }
+  )
 }
 
 # Run application ---------------------------------------------------------
