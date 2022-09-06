@@ -29,32 +29,6 @@ nav {
   border-bottom: 1px solid lightgray;
 }
 
-/* settings for the home page ----------------------------------------------- */
-  
-#table {
-  max-width: 650px;
-}
-
-#logo {
-  width: 100%;
-  padding-top: 30px;
-}
-
-#logo img {
-  width: 100%;
-  max-width: 450px;
-}
-
-#logo p {
-  font-size: 3rem;
-  font-weight: 500;
-}
-
-#text {
-  width: 100%;
-  max-width: 650px;
-}
-
 /* settings for all panels (contact + faq) ---------------------------------- */
 
 .panel {
