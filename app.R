@@ -20,6 +20,7 @@ options(shiny.maxRequestSize = 100 * 1024 ^ 2)
 ui <- navbarPage(
     theme = bs_theme(version = 5),
     title = "statcheck // web", 
+    theme = bs_theme(version = 5),
     collapsible = TRUE,
     header = tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "css/styles.css"),
@@ -28,25 +29,44 @@ ui <- navbarPage(
     ),
     tabPanel("Home",
       fluidRow(
-        tags$div(class = "center",
-          column(10, 
-            includeHTML("html/home.html"),
-            hr(style="margin-left: 0; width: 100%; max-width: 650px"),
-            fileInput("file", 
-              label = "Upload files (pdf, html, or docx):",
-              multiple = FALSE,
-              accept = c('pdf/html/docx')
-            ),
-            h5("Settings:", class = "settings"),
-            checkboxInput("one_tail",
-              label = "Try to identify and correct for one-tailed tests?",
-              value = FALSE
-            ),
-            hr(style="margin-left: 0; width: 100%; max-width: 650px"),
-            shiny::uiOutput("table")
-          ) 
-        )
-      )
+        column(width = 10, offset = 1,
+          tags$div(class = "center",
+            tags$img(
+              src = "./img/statcheck-cropped.png", 
+              title = "statcheck",
+              style = "max-width: 500px"),
+            tags$p(class = "fw-bold fs-4", "statcheck on the web")
+          ),
+          tags$p(
+            "To check a PDF, DOCX or HTML file for errors in statistical 
+            reporting, upload it below. See the FAQ page for more information 
+            about what statcheck can and cannot do."
+          ),
+          hr(),
+          fileInput("file", 
+            label = "Upload files (pdf, html, or docx):",
+            multiple = FALSE,
+            accept = c("pdf", "html", "doc", "docx")
+          ),
+          h5("Settings:", class = "settings"),
+          checkboxInput("one_tail",
+            label = "Try to identify and correct for one-tailed tests?",
+            value = FALSE,
+            width = "100%"
+          ),
+          hr(),
+          conditionalPanel(
+            condition = "!output.error",
+            DT::dataTableOutput("table"),
+          ),
+          conditionalPanel(
+            condition = "output.error",
+            tags$div(class = "text-danger fw-bold",
+              textOutput("error")
+            )
+          )
+        ) 
+      ) 
     ),
     tabPanel("FAQ",
       fluidRow(
@@ -59,28 +79,22 @@ ui <- navbarPage(
     ),
     tabPanel("Contact",
       fluidRow(
-        tags$div(class = "center",
-          column(10, 
-            includeHTML("html/contact.html")
-          )
+        column(width = 10, offset = 1, 
+          includeHTML("html/contact.html")
         )
       )
     ),
     tabPanel("Contributors",
-             fluidRow(
-               tags$div(class = "center",
-                        column(10, 
-                               includeHTML("html/contributors.html")
-                        )
-               )
-             )
+      fluidRow(
+        column(width = 10, offset = 1,
+          includeHTML("html/contributors.html")
+        )
+      )
     ),
     tabPanel("MS Word Add-in",
       fluidRow(
-        tags$div(class = "center",
-          column(10, 
-            includeHTML("html/word-addin.html")
-          )
+        column(width = 10, offset = 1,
+          includeHTML("html/word-addin.html")
         )
       )
     )
@@ -89,43 +103,15 @@ ui <- navbarPage(
 # Server ------------------------------------------------------------------
 
 server <- function(input, output) {
+  # Create variables to store an error status in
+  values <- reactiveValues(error = NULL)
   
-  # Create a reactive variable for creating the results table and download 
-  # feature
-  results <- reactive({
-    # Get the file extension of the file
-    file_extension <- tools::file_ext(input$file$name)
-    
-    # Check whether the user supplied a pdf, html, or Word file.
-    validate(
-      need(file_extension %in% c("pdf", "html", "doc", "docx"), 
-        "Please select a PDF, HTML, or Word file.")
-    )
-    
-    # Extract text from the file, depending on the file extension
-    if (file_extension == "pdf") {
-      text <- pdftools::pdf_text(input$file$datapath)
-    } else if (file_extension == "html")  {
-      html <- paste(readLines(input$file$datapath), collapse = "\n")
-      text <- htm2txt::htm2txt(html)
-    } else if (file_extension %in% c("doc", "docx")) {
-      word <- readtext::readtext(input$file$datapath)
-      text <- word$text
-    }
-    
-    # Run statcheck
-    res <- statcheck::statcheck(text, OneTailedTests = input$one_tail)
-    
-    # Check whether any results were found
-    validate(
-      need(nrow(res) > 0, "No results found. See the FAQ page for some common reasons why statcheck doesn't detect some results.")
-    )
-    
-    return(res)
-  })
-
-  # Detailed:
-  output$results <- DT::renderDataTable(
+  # Render the error message
+  output$error <- renderText(values$error)
+  outputOptions(output, "error", suspendWhenHidden = FALSE)
+  
+  # Render the statcheck results table
+  output$table <- renderDataTable(
     extensions = "Buttons", 
     options = list(
       dom = 'Bfrtip',
@@ -140,12 +126,48 @@ server <- function(input, output) {
           text = 'Download'
         )
       )
-    ),
+    ), 
     {
-      req(input$file)
-  
-      res <- results()
+      # Check whether the use uploaded a file
+      file <- input$file
+
+      if (is.null(file))
+        return(NULL)
       
+      # Check whether the user supplied a PDF, HTML, or MS Word file
+      file_extension <- tools::file_ext(file$name)
+      
+      if (!file_extension %in% c("pdf", "html", "doc", "docx")) {
+        values$error <- "Please select a PDF, HTML, or Word file."
+      
+        return(NULL)
+      } 
+    
+      # Extract text from the file, depending on the file extension
+      if (file_extension == "pdf") {
+        text <- pdftools::pdf_text(input$file$datapath)
+      } else if (file_extension == "html")  {
+        html <- paste(readLines(input$file$datapath), collapse = "\n")
+        text <- htm2txt::htm2txt(html)
+      } else if (file_extension %in% c("doc", "docx")) {
+        word <- readtext::readtext(input$file$datapath)
+        text <- word$text
+      }
+      
+      # Run statcheck
+      suppressMessages(
+        res <- statcheck::statcheck(text, OneTailedTests = input$one_tail)
+      )
+      
+      # Check whether any results were found
+      if (is.null(res)) {
+        values$error <- "No results found. See the FAQ page for some common 
+          reasons why statcheck doesn't detect some results."
+        
+        return(NULL)
+      }
+      
+      # Clean up the data frame
       res$Error <- ifelse(res$Error == FALSE, "Consistent", ifelse(
       res$DecisionError == TRUE, "Decision Inconsistency", "Inconsistency"))
     
@@ -156,14 +178,14 @@ server <- function(input, output) {
   
       # Create human-friendly column names
       names(res) <- c("Statistical reference", "Computed p-value", "Consistency")
-  
+      
+      # All went well so store there is no error in case there previously was 
+      # one
+      values$error <- NULL
+
       return(res)
     }
   )
-  
-  output$table <- renderUI({
-    div(DT::dataTableOutput("results"))
-  })
 }
 
 # Run application ---------------------------------------------------------

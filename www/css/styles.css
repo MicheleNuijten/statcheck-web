@@ -1,52 +1,23 @@
+
+/* general settings --------------------------------------------------------- */
+
+body {
+  padding-bottom: 5rem;
+}
+
 .center {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.settings {
-  font-size: 14px;
-  font-weight: 700;
-}
+ }
 
 h1 {
   margin-bottom: 20px;
 }
 
-#table {
-  max-width: 650px;
-}
-
-#logo {
-  width: 100%;
-  padding-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-}
-
-#logo img {
-  width: 100%;
-  max-width: 450px;
-}
-
-#logo p {
-  font-size: 3rem;
-  font-weight: 500;
-}
-
-#text {
+img {
   width: 100%;
   max-width: 650px;
-}
-
-#addin {
-  width: 100%;
-  max-width: 650px;
-}
-
-.panel {
-  max-width: 300px;
 }
 
 #infographic img {
@@ -54,7 +25,98 @@ h1 {
   max-width: 650px;
 }
 
-/* settings for the contributor page */
+nav {
+  border-bottom: 1px solid lightgray;
+}
+
+/* file input --------------------------------------------------------------- */
+
+.btn-file {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border: 1px solid lightgray;
+}
+
+.btn-file:hover {
+  border: 1px solid lightgray;
+}
+
+/* settings for all panels (contact + faq) ---------------------------------- */
+
+.panel {
+    box-shadow: none;
+    border-radius: 20px;
+  }
+
+.panel-default > .panel-heading {
+  background-color: #FFC58B;
+}
+
+.panel-body {
+  padding: 15px 15px 0 15px;
+}
+
+.panel-body p {
+  margin: 10px 0 10 10px;
+  color: #262626
+}
+
+.panel-body ul {
+  padding-left: 10px;
+}
+
+/* settings for FAQ ------------------------------------*/
+
+.accordion {
+  max-width: 650px;
+}
+
+.panel-title {
+  color: #262626;
+  font-size: 16px;
+  width: 100%;
+}
+
+.accordion > .panel-default > .panel-heading {
+  border-radius: 20px;
+}
+
+
+/* this is about the little v symbol in the collapsible */
+.collapsible-link {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding-right: 18px;
+}
+  
+.collapsible-link::after {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  
+  content: '\f107';
+  transform: translateY(-50%);
+  font-family: 'FontAwesome';
+  font-size: 1.1rem;
+}
+  
+.collapsible-link[aria-expanded='true']::after {
+  content: '\f106';
+}
+
+/* settings for contact --------------------------------*/
+
+.contact {
+  max-width: 300px;
+}
+
+.contact > .panel-default > .panel-heading {
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+/* settings for contributor page -------------------------------------------- */
 
 .ctrbs li {
   margin-bottom: 5px;
