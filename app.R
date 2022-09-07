@@ -18,6 +18,7 @@ options(shiny.maxRequestSize = 100 * 1024 ^ 2)
 # UI ----------------------------------------------------------------------
 
 ui <- navbarPage(
+    theme = bs_theme(version = 5),
     title = "statcheck // web", 
     theme = bs_theme(version = 5),
     collapsible = TRUE,

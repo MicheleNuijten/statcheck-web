@@ -142,23 +142,3 @@ nav {
   background: #219EBC;
   color: white;
 }
-
-/* old settings that don't seem to do anything or are superfluous --------------
-
-.settings {
-  font-size: 14px;
-  font-weight: 700;
-}
-
-#addin {
-  width: 100%;
-  max-width: 650px;
-}
-
-.panel-body ol {
-  padding-left: 20px;
-}
-
-
-*/
-
