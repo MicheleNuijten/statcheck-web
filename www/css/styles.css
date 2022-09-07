@@ -29,6 +29,18 @@ nav {
   border-bottom: 1px solid lightgray;
 }
 
+/* file input --------------------------------------------------------------- */
+
+.btn-file {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border: 1px solid lightgray;
+}
+
+.btn-file:hover {
+  border: 1px solid lightgray;
+}
+
 /* settings for all panels (contact + faq) ---------------------------------- */
 
 .panel {
