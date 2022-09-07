@@ -59,7 +59,7 @@ ui <- navbarPage(
         ),
         conditionalPanel(
           condition = "output.error",
-          tags$div(class = "text-danger",
+          tags$div(class = "text-danger fw-bold",
             textOutput("error")
           )
         )
