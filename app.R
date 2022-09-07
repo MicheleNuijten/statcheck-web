@@ -41,31 +41,31 @@ ui <- navbarPage(
             reporting, upload it below. See the FAQ page for more information 
             about what statcheck can and cannot do."
           ),
-        hr(),
-        fileInput("file", 
-          label = "Upload files (pdf, html, or docx):",
-          multiple = FALSE,
-          accept = c("pdf", "html", "doc", "docx")
-        ),
-        h5("Settings:", class = "settings"),
-        checkboxInput("one_tail",
-          label = "Try to identify and correct for one-tailed tests?",
-          value = FALSE
-        ),
-        hr(style="margin-left: 0; width: 100%; max-width: 650px"),
-        conditionalPanel(
-          condition = "!output.error",
-          DT::dataTableOutput("table"),
-        ),
-        conditionalPanel(
-          condition = "output.error",
-          tags$div(class = "text-danger fw-bold",
-            textOutput("error")
+          hr(),
+          fileInput("file", 
+            label = "Upload files (pdf, html, or docx):",
+            multiple = FALSE,
+            accept = c("pdf", "html", "doc", "docx")
+          ),
+          h5("Settings:", class = "settings"),
+          checkboxInput("one_tail",
+            label = "Try to identify and correct for one-tailed tests?",
+            value = FALSE,
+            width = "100%"
+          ),
+          hr(),
+          conditionalPanel(
+            condition = "!output.error",
+            DT::dataTableOutput("table"),
+          ),
+          conditionalPanel(
+            condition = "output.error",
+            tags$div(class = "text-danger fw-bold",
+              textOutput("error")
+            )
           )
-        )
+        ) 
       ) 
-    ) 
-      
     ),
     tabPanel("FAQ",
       fluidRow(
@@ -78,28 +78,22 @@ ui <- navbarPage(
     ),
     tabPanel("Contact",
       fluidRow(
-        tags$div(class = "center",
-          column(10, 
-            includeHTML("html/contact.html")
-          )
+        column(width = 10, offset = 1, 
+          includeHTML("html/contact.html")
         )
       )
     ),
     tabPanel("Contributors",
-             fluidRow(
-               tags$div(class = "center",
-                        column(10, 
-                               includeHTML("html/contributors.html")
-                        )
-               )
-             )
+      fluidRow(
+        column(width = 10, offset = 1,
+          includeHTML("html/contributors.html")
+        )
+      )
     ),
     tabPanel("MS Word Add-in",
       fluidRow(
-        tags$div(class = "center",
-          column(10, 
-            includeHTML("html/word-addin.html")
-          )
+        column(width = 10, offset = 1,
+          includeHTML("html/word-addin.html")
         )
       )
     )
