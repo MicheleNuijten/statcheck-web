@@ -10,6 +10,7 @@ library(htm2txt)
 library(readtext)
 library(DT)
 library(tools)
+library(dplyr)
 
 # Set options
 options(shiny.sanitize.errors = FALSE)
@@ -164,6 +165,16 @@ server <- function(input, output) {
           reasons why statcheck doesn't detect some results."
         
         return(NULL)
+      }
+      
+      # Check whether old or new variable names are used in results data frame
+      # If new: change back to old names to ensure compatibility with the app.
+      # This is a bit of a hacky solution to make sure the transition to the new
+      # statcheck version on CRAN goes smoothly. In time the variable names should 
+      # be updated to the latest version here in the app as well.
+      if("source" %in% colnames(res)){
+        res <- dplyr::rename(res, Raw = raw, Computed = computed_p, Error = error,
+                      DecisionError = decision_error)
       }
       
       # Clean up the data frame
