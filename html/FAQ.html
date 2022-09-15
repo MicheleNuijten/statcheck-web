@@ -1,263 +1,255 @@
-<h1 class="header">about statcheck // web</h1>
+<h1>FAQ</h1>
 
+<div class="accordion" id="FAQ">
 
-<!--------------TRY OUT COLLAPSIBLE MENU HERE -------------------->
-
-<div class="panel-group" id="accordion">
-  
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" 
-           data-parent="#accordion" href="#FAQ-collapse1">
-          What is statcheck?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse1" class="panel-collapse collapse">
-      <div class="panel-body">
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ1">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ1-collapse"
+        aria-expanded="false" aria-controls="FAQ1-collapse">
+        What is statcheck?
+      </button>
+    </span>
+    <div id="FAQ1-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ1">
+      <div class="accordion-body">
         <p>
-          statcheck is a "spellchecker" for statistics. It checks whether your 
-          <i>p</i>-values match their accompanying test statistic and degrees 
-          of freedom. 
+          statcheck is a "spellchecker" for statistics. It checks whether your
+          <i>p</i>-values match their accompanying test statistic and degrees
+          of freedom.
         </p>
         <p>
           statcheck searches for null-hypothesis significance test (NHST) in APA
-  		    style (e.g., t(28) = 2.2, p < .05). It recalculates the <i>p</i>-value
-  		    using the reported test statistic and degrees of freedom. If the
-  		    reported and computed <i>p</i>-values don't match, statcheck will flag 
-  		    the result as an error.
+          style (e.g., t(28) = 2.2, p < .05). It recalculates the <i>p</i>-value
+            using the reported test statistic and degrees of freedom. If the
+            reported and computed <i>p</i>-values don't match, statcheck will flag
+            the result as an error.
         </p>
         <div id="infographic">
-          <img id="faq-consistent" src="./img/faq-consistent.svg" title = "A consistent result">
+          <img id="faq-consistent" src="./img/faq-consistent.png" title="A consistent result">
         </div>
       </div>
     </div>
   </div>
   
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse2">
-          Which results does statcheck detect?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse2" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>statcheck recognizes correlations (r) and t, F, &chi;<sup>2</sup>, Z tests and Q tests, as long as they are reported completely (test statistic, degrees of freedom if applicable, and p-value) and in <a href="https://apastyle.apa.org/instructional-aids/numbers-statistics-guide.pdf" target="_blank">APA Style</a>. Statcheck usually can't find statistics in tables.</p>
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ2">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ2-collapse"
+        aria-expanded="false" aria-controls="FAQ2-collapse">
+        Which results does statcheck detect?
+      </button>
+    </span>
+    <div id="FAQ2-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ2">
+      <div class="accordion-body">
+        <p>statcheck recognizes correlations (r) and t, F, &chi;<sup>2</sup>, Z tests and Q tests, as long as they are
+          reported completely (test statistic, degrees of freedom if applicable, and p-value) and in <a
+            href="https://apastyle.apa.org/instructional-aids/numbers-statistics-guide.pdf" target="_blank">APA
+            Style</a>. Statcheck usually can't find statistics in tables.</p>
 
-        <p>statcheck takes into account that test statistics and p values may be exactly (=) or inexactly (< or >) reported. Different spacing has also been taken into account.
+        <p>statcheck takes into account that test statistics and p values may be exactly (=) or inexactly (< or>)
+            reported. Different spacing has also been taken into account.
         </p>
 
         <div id="infographic">
-          <img id="faq-stat-types" src="./img/faq-stat-types.svg" title = "What does statcheck check?">
+          <img id="faq-stat-types" src="./img/faq-stat-types.png" title="What does statcheck check?">
         </div>
       </div>
     </div>
   </div>
-  
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse3">
-          How does statcheck flag (in)consistencies?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse3" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>statcheck searches for null-hypothesis significance test (NHST) in APA style (e.g., t(28) = 2.2, p < .05). It recalculates the p-value using the reported test statistic and degrees of freedom. If the reported and computed p-values don't match, statcheck will flag the result as an inconsistency. If the reported p-value is statistically significant (&alpha; = .05) and the recomputed p-value is not, or vice versa, the result is flagged as a decision inconsistency.</p>
 
-        <div id="infographic">
-          <img id="faq-inconsistent" src="./img/faq-inconsistent.svg" title = "An inconsistent result">
-        </div>
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ3">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ3-collapse"
+        aria-expanded="false" aria-controls="FAQ3-collapse">
+        How does statcheck flag (in)consistencies?
+      </button>
+    </span>
+    <div id="FAQ3-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ3">
+      <div class="accordion-body">
+        <p>statcheck searches for null-hypothesis significance test (NHST) in APA style (e.g., t(28) = 2.2, p < .05). It
+            recalculates the p-value using the reported test statistic and degrees of freedom. If the reported and
+            computed p-values don't match, statcheck will flag the result as an inconsistency. If the reported p-value
+            is statistically significant (&alpha;=.05) and the recomputed p-value is not, or vice versa, the result is
+            flagged as a decision inconsistency.</p>
 
-        <div id="infographic">
-          <img id="faq-decision-inconsistent" src="./img/faq-decision-inconsistent.svg" title = "A decision inconsistency">
-        </div>
+            <div id="infographic">
+              <img id="faq-inconsistent" src="./img/faq-inconsistent.png" title="An inconsistent result">
+            </div>
+
+            <div id="infographic">
+              <img id="faq-decision-inconsistent" src="./img/faq-decision-inconsistent.png"
+                title="A decision inconsistency">
+            </div>
       </div>
     </div>
   </div>
-  
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse4">
-          How do I correct an inconsistency?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse4" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>To fix any errors, go to your statistical software to check which of the three numbers (test statistic, degrees of freedom, and/or p-value) you need to correct in your document.
+
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ4">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ4-collapse"
+        aria-expanded="false" aria-controls="FAQ4-collapse">
+        How do I correct an inconsistency?
+      </button>
+    </span>
+    <div id="FAQ4-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ4">
+      <div class="accordion-body">
+        <p>To fix any errors, go to your statistical software to check which of the three numbers (test statistic,
+          degrees of freedom, and/or p-value) you need to correct in your document.
         </p>
       </div>
     </div>
   </div>
-  
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse5">
-          How does statcheck "try to identify and correct for one-tailed tests"?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse5" class="panel-collapse collapse">
-      <div class="panel-body">
+
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ5">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ5-collapse"
+        aria-expanded="false" aria-controls="FAQ5-collapse">
+        How does statcheck "try to identify and correct for one-tailed tests"?
+      </button>
+    </span>
+    <div id="FAQ5-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ5">
+      <div class="accordion-body">
         <p>
-          By default, statcheck treats all tests as two-tailed. If you want to take into account one-tailed tests, you can check the box "Correct for one-tailed tests".
+          By default, statcheck treats all tests as two-tailed. If you want to take into account one-tailed tests, you
+          can check the box "Correct for one-tailed tests".
         </p>
         <p>
-          When this box is ticked, statcheck will search the entire text for the keywords "one-tailed", "one-sided", and "directional" (taking spacing issues etc. into account). When statcheck finds at least one of those keywords AND an initially inconsistent result would be consistent if it was a one-tailed test, then statcheck treats this case as a one-tailed test and counts it as consistent.
+          When this box is ticked, statcheck will search the entire text for the keywords "one-tailed", "one-sided", and
+          "directional" (taking spacing issues etc. into account). When statcheck finds at least one of those keywords
+          AND an initially inconsistent result would be consistent if it was a one-tailed test, then statcheck treats
+          this case as a one-tailed test and counts it as consistent.
         </p>
       </div>
     </div>
   </div>
-  
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse6">
-          Why doesn't statcheck detect my statistics?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse6" class="panel-collapse collapse">
-      <div class="panel-body">
+
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ6">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ6-collapse"
+        aria-expanded="false" aria-controls="FAQ6-collapse">
+        Why doesn't statcheck detect my statistics?
+      </button>
+    </span>
+    <div id="FAQ6-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ6">
+      <div class="accordion-body">
         <p>
           Some common reasons why statcheck doesn't detect some results:
         </p>
-        
+
         <ul>
-          <li>The result was not reported according to APA style. This includes minor deviations such as square brackets instead of parentheses, or a semi-colon instead of a comma.
+          <li>The result was not reported according to APA style. This includes minor deviations such as square brackets
+            instead of parentheses, or a semi-colon instead of a comma.
           </li>
-          <li>The result was not reported completely. statcheck needs three ingredients to detect a result and recalculate the p-value: the reported test statistic, degrees of freedom, and p-value. If one or more of these are missing, statcheck will not pick it up.
+          <li>The result was not reported completely. statcheck needs three ingredients to detect a result and
+            recalculate the p-value: the reported test statistic, degrees of freedom, and p-value. If one or more of
+            these are missing, statcheck will not pick it up.
           </li>
           <li>The result is reported in a table.
           </li>
         </ul>
-        
+
         <div id="infographic">
-          <img id="faq-stat-types" src="./img/faq-stat-types.svg" title = "What does statcheck check?">
+          <img id="faq-stat-types" src="./img/faq-stat-types.png" title="What does statcheck check?">
         </div>
-        
       </div>
     </div>
   </div>
-  
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse7">
-          Why does statcheck say my result is consistent when I think it's not?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse7" class="panel-collapse collapse">
-      <div class="panel-body">
+
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ7">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ7-collapse"
+        aria-expanded="false" aria-controls="FAQ7-collapse">
+        Why does statcheck say my result is consistent when I think it's not?
+      </button>
+    </span>
+    <div id="FAQ7-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ7">
+      <div class="accordion-body">
         <p>
-          Note that a seemingly inconsistent p value can still be correct when we take into account that the test statistic might have been rounded after calculating the corresponding p value. For instance, a reported t value of 2.35 could correspond to an actual value of 2.345 to 2.354 with a range of p values that can slightly deviate from the recomputed p value. statcheck will not count cases like this as errors.
+          Note that a seemingly inconsistent p value can still be correct when we take into account that the test
+          statistic might have been rounded after calculating the corresponding p value. For instance, a reported t
+          value of 2.35 could correspond to an actual value of 2.345 to 2.354 with a range of p values that can slightly
+          deviate from the recomputed p value. statcheck will not count cases like this as errors.
         </p>
-          
-        <p>If you think that statcheck wrongly passed one of your results, please contact us (see below). For more information about statcheck's accuracy, see below.
-        </p>
-      </div>
-    </div>
-  </div>
-  
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse8">
-          Why does statcheck say my result is inconsistent when I think it's not?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse8" class="panel-collapse collapse">
-      <div class="panel-body">
-        <p>
-          statcheck flags result as an error when the reported p-value does not match the recalculated p-value. However, there may be cases in which you deliberately reported an inconsistent result. For example, when you conducted a one-tailed test, reported a Bonferroni corrected p-value, or corrected degrees of freedom.
-        </p>
-        
-        <p>
-          Of course it is also possible that statcheck really made a mistake and erroneously flagged a result as inconsistent. For example, the conversion from PDF (and sometimes also HTML) to plain text and extraction of statistics can result in errors. Some statistical values can be missed, especially if the notation is unconventional.
-        </p>
-        
-        <p>
-          If you think that statcheck wrongly flagged one of your results, please contact us (see below). For more information about statcheck's accuracy, see the next section.
+
+        <p>If you think that statcheck wrongly passed one of your results, please contact us (see below). For more
+          information about statcheck's accuracy, see below.
         </p>
       </div>
     </div>
   </div>
-  
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse9">
-          How accurate is statcheck?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse9" class="panel-collapse collapse">
-      <div class="panel-body">
+
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ8">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ8-collapse"
+        aria-expanded="false" aria-controls="FAQ8-collapse">
+        Why does statcheck say my result is inconsistent when I think it's not?
+      </button>
+    </span>
+    <div id="FAQ8-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ8">
+      <div class="accordion-body">
         <p>
-          In typical psychology journals, statcheck detects about 60% of the null hypothesis significance tests. In classifying extracted results as consistent or inconsistent, statcheck has an accuracy between 96.2% and 99.9%, depending on its settings. See <a href="https://psyarxiv.com/tcxaj/" target="_blank">Nuijten et al., 2017</a> for details.
+          statcheck flags result as an error when the reported p-value does not match the recalculated p-value. However,
+          there may be cases in which you deliberately reported an inconsistent result. For example, when you conducted
+          a one-tailed test, reported a Bonferroni corrected p-value, or corrected degrees of freedom.
+        </p>
+
+        <p>
+          Of course it is also possible that statcheck really made a mistake and erroneously flagged a result as
+          inconsistent. For example, the conversion from PDF (and sometimes also HTML) to plain text and extraction of
+          statistics can result in errors. Some statistical values can be missed, especially if the notation is
+          unconventional.
+        </p>
+
+        <p>
+          If you think that statcheck wrongly flagged one of your results, please contact us (see below). For more
+          information about statcheck's accuracy, see the next section.
         </p>
       </div>
     </div>
   </div>
-  
-    <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse10">
-          Do you maintain a copy of analyzed papers or results?
-        </a>
-      </h4>
+
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ9">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ9-collapse"
+        aria-expanded="false" aria-controls="FAQ9-collapse">
+        How accurate is statcheck?
+      </button>
+    </span>
+    <div id="FAQ9-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ9">
+      <div class="accordion-body">
+        <p>
+          In typical psychology journals, statcheck detects about 60% of the null hypothesis significance tests. In
+          classifying extracted results as consistent or inconsistent, statcheck has an accuracy between 96.2% and
+          99.9%, depending on its settings. See <a href="https://psyarxiv.com/tcxaj/" target="_blank">Nuijten et al.,
+            2017</a> for details.
+        </p>
+      </div>
     </div>
-    <div id="FAQ-collapse10" class="panel-collapse collapse">
-      <div class="panel-body">
+  </div>
+
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ10">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ10-collapse"
+        aria-expanded="false" aria-controls="FAQ10-collapse">
+        Do you maintain a copy of analyzed papers or results?
+      </button>
+    </span>
+    <div id="FAQ10-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ10">
+      <div class="accordion-body">
         <p>
           No. Neither the uploaded files nor the results of statcheck are stored anywhere.
         </p>
       </div>
     </div>
   </div>
-  
-     <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse11">
-         Something is broken. Who can help me?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse11" class="panel-collapse collapse">
-      <div class="panel-body">
+
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ11">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ11-collapse"
+        aria-expanded="false" aria-controls="FAQ11-collapse">
+        Something is broken. Who can help me?
+      </button>
+    </span>
+    <div id="FAQ11-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ11">
+      <div class="accordion-body">
         <p>
           See our contact page.
         </p>
@@ -265,46 +257,43 @@
     </div>
   </div>
 
-  <!------------------------------------------->
-  
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="collapsible-link" data-toggle="collapse" data-parent="#accordion" href="#FAQ-collapse12">
-         Where can I find more information about statcheck?
-        </a>
-      </h4>
-    </div>
-    <div id="FAQ-collapse12" class="panel-collapse collapse">
-      <div class="panel-body">
+  <div class="accordion-item">
+    <span class="accordion-header" id="FAQ12">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#FAQ12-collapse"
+        aria-expanded="false" aria-controls="FAQ12-collapse">
+        Where can I find more information about statcheck?
+      </button>
+    </span>
+    <div id="FAQ12-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ12">
+      <div class="accordion-body">
         <ul>
-        	<li>
-        	  <a href="https://rpubs.com/michelenuijten/statcheckmanual" target="_blank">The 
-        	  manual</a>: A detailed instruction manual with information on what 
-        	  statcheck can and cannot do, information on how to install and use 
-        	  the statcheck R package, and more.
-        	</li>
-        	<li>
-        	  <a href="http://cran.r-project.org/web/packages/statcheck/" target="_blank">The R 
-        	  package</a>: The R package has additional functionality which 
-        	  allows you to change more settings and to scan entire folders of 
-        	  papers.
-        	</li>
-        	<li>
-        	  <a href="https://doi.org/10.3758/s13428-015-0664-2" target="_blank">
-        	  The paper</a>: The seminal paper in which statcheck was introduced. 
-        	  We ran statcheck on over 30,000 psychology papers and report 
-        	  general inconsistency-prevalences over time and per journal.
-        	</li>
-        	<li>
-        	  <a href="https://psyarxiv.com/tcxaj/" target="_blank">The validity study</a>: We 
-        	  compared statcheck's performance with manual checks and assessed 
-        	  its accuracy in classifying results as consistent/inconsistent
-        	</li>
-        	<li>
-        	  <a href="https://github.com/MicheleNuijten/statcheck" target="_blank">The GitHub 
-        	  page</a>: Here you can find statcheck's latest developments.
-        	</li>
+          <li>
+            <a href="https://rpubs.com/michelenuijten/statcheckmanual" target="_blank">The
+              manual</a>: A detailed instruction manual with information on what
+            statcheck can and cannot do, information on how to install and use
+            the statcheck R package, and more.
+          </li>
+          <li>
+            <a href="http://cran.r-project.org/web/packages/statcheck/" target="_blank">The R
+              package</a>: The R package has additional functionality which
+            allows you to change more settings and to scan entire folders of
+            papers.
+          </li>
+          <li>
+            <a href="https://doi.org/10.3758/s13428-015-0664-2" target="_blank">
+              The paper</a>: The seminal paper in which statcheck was introduced.
+            We ran statcheck on over 30,000 psychology papers and report
+            general inconsistency-prevalences over time and per journal.
+          </li>
+          <li>
+            <a href="https://psyarxiv.com/tcxaj/" target="_blank">The validity study</a>: We
+            compared statcheck's performance with manual checks and assessed
+            its accuracy in classifying results as consistent/inconsistent
+          </li>
+          <li>
+            <a href="https://github.com/MicheleNuijten/statcheck" target="_blank">The GitHub
+              page</a>: Here you can find statcheck's latest developments.
+          </li>
         </ul>
       </div>
     </div>
