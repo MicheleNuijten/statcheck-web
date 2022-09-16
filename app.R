@@ -2,15 +2,15 @@
 # Setup -------------------------------------------------------------------
 
 # Load packages
+#devtools::install_github("MicheleNuijten/statcheck@feature-statcheck2.0")
+library(statcheck)
 library(shiny)
 library(bslib)
-library(statcheck)
 library(pdftools)
 library(htm2txt)
 library(readtext)
 library(DT)
 library(tools)
-library(dplyr)
 
 # Set options
 options(shiny.sanitize.errors = FALSE)
@@ -24,7 +24,8 @@ ui <- navbarPage(
     collapsible = TRUE,
     header = tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "css/styles.css"),
-      tags$script(src = "https://kit.fontawesome.com/0c3170759b.js", 
+      tags$script(
+        src = "https://kit.fontawesome.com/0c3170759b.js", 
         crossorigin = "anonymous")
     ),
     tabPanel("Home",
@@ -172,7 +173,10 @@ server <- function(input, output) {
       # This is a bit of a hacky solution to make sure the transition to the new
       # statcheck version on CRAN goes smoothly. In time the variable names should 
       # be updated to the latest version here in the app as well.
-      if("source" %in% colnames(res)){
+      print(names(res))
+      if("source" %in% colnames(res)) {
+
+        
         res <- dplyr::rename(res, Raw = raw, Computed = computed_p, Error = error,
                       DecisionError = decision_error)
       }
