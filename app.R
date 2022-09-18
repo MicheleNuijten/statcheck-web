@@ -29,74 +29,62 @@ ui <- navbarPage(
         crossorigin = "anonymous")
     ),
     tabPanel("Home",
-      fluidRow(
-        column(width = 10, offset = 1,
-          tags$div(class = "center",
-            tags$img(
-              src = "./img/statcheck-cropped.png", 
-              title = "statcheck",
-              style = "max-width: 500px"),
-            tags$p(class = "fw-bold fs-4", "statcheck on the web")
-          ),
-          tags$p(
-            "To check a PDF, DOCX or HTML file for errors in statistical 
-            reporting, upload it below. See the FAQ page for more information 
-            about what statcheck can and cannot do."
-          ),
-          hr(),
-          fileInput("file", 
-            label = "Upload files (pdf, html, or docx):",
-            multiple = FALSE,
-            accept = c("pdf", "html", "doc", "docx")
-          ),
-          h5("Settings:", class = "settings"),
-          checkboxInput("one_tail",
-            label = "Try to identify and correct for one-tailed tests?",
-            value = FALSE,
-            width = "100%"
-          ),
-          hr(),
-          conditionalPanel(
-            condition = "!output.error",
-            DT::dataTableOutput("table"),
-          ),
-          conditionalPanel(
-            condition = "output.error",
-            tags$div(class = "text-danger fw-bold",
-              textOutput("error")
-            )
+      tags$div(class = "container",
+        tags$div(class = "center",
+          tags$img(
+            src = "./img/statcheck-cropped.png", 
+            title = "statcheck",
+            style = "max-width: 500px"),
+          tags$p(class = "fw-bold fs-4", "statcheck on the web")
+        ),
+        tags$p(
+          "To check a PDF, DOCX or HTML file for errors in statistical 
+          reporting, upload it below. See the FAQ page for more information 
+          about what statcheck can and cannot do."
+        ),
+        hr(),
+        fileInput("file", 
+          label = "Upload files (pdf, html, or docx):",
+          multiple = FALSE,
+          accept = c("pdf", "html", "doc", "docx")
+        ),
+        h5("Settings:", class = "settings"),
+        checkboxInput("one_tail",
+          label = "Try to identify and correct for one-tailed tests?",
+          value = FALSE,
+          width = "100%"
+        ),
+        hr(),
+        conditionalPanel(
+          condition = "!output.error",
+          DT::dataTableOutput("table"),
+        ),
+        conditionalPanel(
+          condition = "output.error",
+          tags$div(class = "text-danger fw-bold",
+            textOutput("error")
           )
-        ) 
+        )
       ) 
     ),
     tabPanel("FAQ",
-      fluidRow(
-        tags$div(class = "center",
-          column(10, 
-            includeHTML("html/FAQ.html")
-          )
-        )
+      tags$div(class = "container",
+          includeHTML("html/FAQ.html")
       )
     ),
     tabPanel("Contact",
-      fluidRow(
-        column(width = 10, offset = 1, 
-          includeHTML("html/contact.html")
-        )
+      tags$div(class = "container",
+        includeHTML("html/contact.html")
       )
     ),
     tabPanel("Contributors",
-      fluidRow(
-        column(width = 10, offset = 1,
-          includeHTML("html/contributors.html")
-        )
+      tags$div(class = "container",
+        includeHTML("html/contributors.html")
       )
     ),
     tabPanel("MS Word Add-in",
-      fluidRow(
-        column(width = 10, offset = 1,
-          includeHTML("html/word-addin.html")
-        )
+      tags$div(class = "container",
+        includeHTML("html/word-addin.html")
       )
     )
   )
@@ -169,29 +157,28 @@ server <- function(input, output) {
       }
       
       # Check whether old or new variable names are used in results data frame
-      # If new: change back to old names to ensure compatibility with the app.
+      # If old: change to the new names to ensure compatibility with the app.
       # This is a bit of a hacky solution to make sure the transition to the new
-      # statcheck version on CRAN goes smoothly. In time the variable names should 
-      # be updated to the latest version here in the app as well.
-      print(names(res))
-      if("source" %in% colnames(res)) {
-
-        
-        res <- dplyr::rename(res, Raw = raw, Computed = computed_p, Error = error,
-                      DecisionError = decision_error)
+      # statcheck version on CRAN goes smoothly. In time we can remove this code
+      if ("Source" %in% names(res)) {
+        names(res) <- c("source", "test_type", "df1", "df2",  "test_comp", 
+          "test_value", "p_comp", "reported_p", "computed_p", "raw", "error", 
+          "decision_error", "one_tailed_in_txt", "apa_factor")
       }
       
       # Clean up the data frame
-      res$Error <- ifelse(res$Error == FALSE, "Consistent", ifelse(
-      res$DecisionError == TRUE, "Decision Inconsistency", "Inconsistency"))
+      res$error <- ifelse(res$error == FALSE, "Consistent", ifelse(
+        res$decision_error == TRUE, "Decision Inconsistency", "Inconsistency")
+      )
     
-      res <- subset(res, select = c(Raw, Computed, Error))
+      res <- subset(res, select = c(raw, computed_p, error))
       
       # Format the computer p-value column
-      res$Computed <- sprintf("%.05f", res$Computed)
-  
+      res$computed_p <- sprintf("%.05f", res$computed_p)
+      
       # Create human-friendly column names
-      names(res) <- c("Statistical reference", "Computed p-value", "Consistency")
+      names(res) <- c("Statistical reference", "Computed p-value", 
+        "Consistency")
       
       # All went well so store there is no error in case there previously was 
       # one
