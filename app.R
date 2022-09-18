@@ -50,7 +50,7 @@ ui <- navbarPage(
         ),
         h5("Settings:", class = "settings"),
         checkboxInput("one_tail",
-          label = "Try to identify and correct for one-tailed tests?",
+          label = "Try to identify and correct for one-tailed tests",
           value = FALSE,
           width = "100%"
         ),
@@ -99,6 +99,13 @@ server <- function(input, output) {
   output$error <- renderText(values$error)
   outputOptions(output, "error", suspendWhenHidden = FALSE)
   
+  observe({
+    file <- input$file
+    
+    # Reset error messages when a new file is uploaded
+    values$error <- NULL
+  })
+
   # Render the statcheck results table
   output$table <- renderDataTable(
     extensions = "Buttons", 
@@ -117,21 +124,18 @@ server <- function(input, output) {
       )
     ), 
     {
-      # Check whether the use uploaded a file
+      req(input$file)
       file <- input$file
-
-      if (is.null(file))
-        return(NULL)
       
       # Check whether the user supplied a PDF, HTML, or MS Word file
       file_extension <- tools::file_ext(file$name)
       
       if (!file_extension %in% c("pdf", "html", "doc", "docx")) {
         values$error <- "Please select a PDF, HTML, or Word file."
-      
+        
         return(NULL)
       } 
-    
+      
       # Extract text from the file, depending on the file extension
       if (file_extension == "pdf") {
         text <- pdftools::pdf_text(input$file$datapath)
@@ -170,7 +174,7 @@ server <- function(input, output) {
       res$error <- ifelse(res$error == FALSE, "Consistent", ifelse(
         res$decision_error == TRUE, "Decision Inconsistency", "Inconsistency")
       )
-    
+      
       res <- subset(res, select = c(raw, computed_p, error))
       
       # Format the computer p-value column
