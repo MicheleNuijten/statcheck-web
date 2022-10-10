@@ -40,7 +40,7 @@
     <div id="FAQ2-collapse" class="accordion-collapse collapse" aria-labelledby="FAQ2">
       <div class="accordion-body">
         <p>statcheck recognizes correlations (r) and t, F, &chi;<sup>2</sup>, Z tests and Q tests, as long as they are
-          reported completely (test statistic, degrees of freedom if applicable, and p-value) and in <a
+          reported completely (test statistic [a.k.a. test value], degrees of freedom if applicable, and p-value) and in <a
             href="https://apastyle.apa.org/instructional-aids/numbers-statistics-guide.pdf" target="_blank">APA
             Style</a>. Statcheck usually can't find statistics in tables.</p>
 
@@ -164,8 +164,7 @@
       <div class="accordion-body">
         <p>
           Note that a seemingly inconsistent p value can still be correct when we take into account that the test
-          statistic might have been rounded after calculating the corresponding p value. For instance, a reported t
-          value of 2.35 could correspond to an actual value of 2.345 to 2.354 with a range of p values that can slightly
+          statistic might have been rounded after calculating the corresponding p value. For instance, a reported t-value of 2.35 could correspond to an actual value of 2.345 to 2.354 with a range of p values that can slightly
           deviate from the recomputed p value. statcheck will not count cases like this as errors.
         </p>
 
