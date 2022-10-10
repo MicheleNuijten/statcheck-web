@@ -1,52 +1,19 @@
+
+/* general settings --------------------------------------------------------- */
+
+body {
+  padding-bottom: 5rem;
+}
+
 .center {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+ }
 
-.settings {
-  font-size: 14px;
-  font-weight: 700;
-}
-
-h1 {
-  margin-bottom: 20px;
-}
-
-#table {
-  max-width: 650px;
-}
-
-#logo {
-  width: 100%;
-  padding-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-}
-
-#logo img {
-  width: 100%;
-  max-width: 450px;
-}
-
-#logo p {
-  font-size: 3rem;
-  font-weight: 500;
-}
-
-#text {
+img {
   width: 100%;
   max-width: 650px;
-}
-
-#addin {
-  width: 100%;
-  max-width: 650px;
-}
-
-.panel {
-  max-width: 300px;
 }
 
 #infographic img {
@@ -54,7 +21,41 @@ h1 {
   max-width: 650px;
 }
 
-/* settings for the contributor page */
+nav {
+  border-bottom: 1px solid lightgray;
+}
+
+.container {
+  max-width: 720px;
+}
+
+/* file input --------------------------------------------------------------- */
+
+.btn-file {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border: 1px solid lightgray;
+}
+
+.btn-file:hover {
+  border: 1px solid lightgray;
+}
+
+.input-group-btn .btn-default:hover {
+  background-color: #d2d4d9;
+}
+
+/* accordion */
+
+.accordion-button  {
+  font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #f8f9fa;
+}
+
+/* settings for contributor page -------------------------------------------- */
 
 .ctrbs li {
   margin-bottom: 5px;
@@ -62,7 +63,7 @@ h1 {
 
 .ctrb {
   border-radius: 10px;
-  padding: 3px 6px 3px 6px;
+  padding: 3px 6px 4px 6px;
   margin-left: 3px;
 }
 
@@ -79,66 +80,4 @@ h1 {
 .ctrb-contributor {
   background: #219EBC;
   color: white;
-}
-
-/* FAQ */
-
-.panel {
-  box-shadow: none;
-}
-
-.panel-group .panel {
-  border-radius: 10px;
-  max-width: 650px;
-}
-
-.panel-default > .panel-heading {
-  background-color: #FFB701;
-}
-
-.panel-title {
-  color: #262626;
-  font-size: 16px;
-  width: 100%;
-}
-
-.panel-body {
-  padding: 15px 15px 0 15px;
-}
-
-.panel-body p {
-  margin: 10px 0 10 10px;
-  color: #262626
-  border-radius: 10px;
-}
-
-.panel-body ol {
-  padding-left: 20px;
-}
-
-.panel-body ul {
-  padding-left: 10px;
-}
-
-.collapsible-link {
-  display: block;
-  position: relative;
-  width: 100%;
-  padding-right: 18px;
-  border-radius: 10px;
-}
-
-.collapsible-link::after {
-  position: absolute;
-  top: 8px;
-  right: 0;
-  
-  content: '\f107';
-  transform: translateY(-50%);
-  font-family: 'FontAwesome';
-  font-size: 1.1rem;
-}
-
-.collapsible-link[aria-expanded='true']::after {
-  content: '\f106';
 }
