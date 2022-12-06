@@ -149,7 +149,7 @@ server <- function(input, output) {
       
       # Run statcheck
       suppressMessages(
-        res <- statcheck::statcheck(text, OneTailedTests = input$one_tail)
+        res <- statcheck::statcheck(text, OneTailedTxt = input$one_tail)
       )
       
       # Check whether any results were found
