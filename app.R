@@ -46,7 +46,7 @@ ui <- navbarPage(
         fileInput("file", 
           label = "Upload files (pdf, html, or docx):",
           multiple = FALSE,
-          accept = c("pdf", "html", "doc", "docx")
+          accept = c("pdf", "htm", "html", "doc", "docx")
         ),
         h5("Settings:", class = "settings"),
         checkboxInput("one_tail",
@@ -130,7 +130,7 @@ server <- function(input, output) {
       # Check whether the user supplied a PDF, HTML, or MS Word file
       file_extension <- tools::file_ext(file$name)
       
-      if (!file_extension %in% c("pdf", "html", "doc", "docx")) {
+      if (!file_extension %in% c("pdf", "htm", "html", "doc", "docx")) {
         values$error <- "Please select a PDF, HTML, or Word file."
         
         return(NULL)
@@ -139,7 +139,7 @@ server <- function(input, output) {
       # Extract text from the file, depending on the file extension
       if (file_extension == "pdf") {
         text <- pdftools::pdf_text(input$file$datapath)
-      } else if (file_extension == "html")  {
+      } else if (file_extension %in% c("htm", "html"))  {
         html <- paste(readLines(input$file$datapath), collapse = "\n")
         text <- htm2txt::htm2txt(html)
       } else if (file_extension %in% c("doc", "docx")) {
