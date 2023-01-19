@@ -109,6 +109,7 @@ server <- function(input, output) {
   # Render the statcheck results table
   output$table <- renderDataTable(
     extensions = "Buttons", 
+    server = FALSE,
     options = list(
       dom = 'Bfrtip',
       buttons = 
