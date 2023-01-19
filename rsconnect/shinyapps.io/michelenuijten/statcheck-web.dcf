@@ -1,0 +1,13 @@
+name: statcheck-web
+title: statcheck-web
+username:
+account: michelenuijten
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7795904
+bundleId: 6689303
+url: https://michelenuijten.shinyapps.io/statcheck-web/
+when: 1672649807.58534
+lastSyncTime: 1672649807.58537
+asMultiple: FALSE
+asStatic: FALSE
