@@ -58,11 +58,20 @@ ui <- navbarPage(
         conditionalPanel(
           condition = "!output.error",
           DT::dataTableOutput("table"),
+          textOutput("sessionInfo")
         ),
         conditionalPanel(
           condition = "output.error",
-          tags$div(class = "text-danger fw-bold",
+          tags$div(
+            class = "text-danger fw-bold",
             textOutput("error")
+            )
+        ),
+        conditionalPanel(
+          condition = "output.error",
+          tags$div(
+            class = "mt-3",
+            textOutput("sessionInfo2")
           )
         )
       ) 
@@ -137,6 +146,7 @@ server <- function(input, output) {
         return(NULL)
       } 
       
+      
       # Extract text from the file, depending on the file extension
       if (file_extension == "pdf") {
         text <- pdftools::pdf_text(input$file$datapath)
@@ -152,6 +162,18 @@ server <- function(input, output) {
       suppressMessages(
         res <- statcheck::statcheck(text, OneTailedTxt = input$one_tail)
       )
+      
+      # Print which statcheck version was run
+      version <- sessionInfo()$otherPkgs$statcheck$Version
+      output$sessionInfo <- renderText({
+        paste0("Statcheck package version: ", version)
+        })
+      
+      # create a second session info for second conditional panel
+      # bit of a hacky solution...
+      output$sessionInfo2 <- renderText({
+        paste0("Statcheck package version: ", version)
+      })
       
       # Check whether any results were found
       if (is.null(res)) {
