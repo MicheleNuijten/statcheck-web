@@ -5,9 +5,9 @@ account: michelenuijten
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7795904
-bundleId: 6689303
+bundleId: 6755087
 url: https://michelenuijten.shinyapps.io/statcheck-web/
-when: 1672649807.58534
-lastSyncTime: 1672649807.58537
+when: 1674217308.0944
+lastSyncTime: 1674217308.09443
 asMultiple: FALSE
 asStatic: FALSE
