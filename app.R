@@ -19,6 +19,9 @@ options(shiny.maxRequestSize = 100 * 1024 ^ 2)
 # UI ----------------------------------------------------------------------
 
 ui <- navbarPage(
+  
+  tags$head(includeHTML(("google-analytics.html"))),
+  
     theme = bs_theme(version = 5),
     title = "statcheck // web", 
     collapsible = TRUE,
