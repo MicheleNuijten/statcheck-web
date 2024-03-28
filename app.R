@@ -91,9 +91,9 @@ ui <- navbarPage(
         includeHTML("html/contributors.html")
       )
     ),
-    tabPanel("MS Word Add-in",
+    tabPanel("Software/Packages",
       tags$div(class = "container",
-        includeHTML("html/word-addin.html")
+        includeHTML("html/software.html")
       )
     )
   )
