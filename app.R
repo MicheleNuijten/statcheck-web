@@ -2,7 +2,6 @@
 # Setup -------------------------------------------------------------------
 
 # Load packages
-#devtools::install_github("MicheleNuijten/statcheck@feature-statcheck2.0")
 library(statcheck)
 library(shiny)
 library(bslib)
@@ -19,26 +18,26 @@ options(shiny.maxRequestSize = 100 * 1024 ^ 2)
 # UI ----------------------------------------------------------------------
 
 ui <- navbarPage(
-    theme = bs_theme(version = 5),
-    title = "statcheck // web", 
-    collapsible = TRUE,
-    header = tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "css/styles.css"),
-      tags$script(
-        src = "https://kit.fontawesome.com/0c3170759b.js", 
-        crossorigin = "anonymous")
-    ),
-    tabPanel("Home",
-      tags$div(class = "container",
-        tags$div(class = "center",
-          tags$img(
-            src = "./img/statcheck-cropped.png", 
-            title = "statcheck",
-            style = "max-width: 500px"),
-          tags$p(class = "fw-bold fs-4", "statcheck on the web")
-        ),
-        tags$p(
-          "To check a PDF, DOCX or HTML file for errors in statistical 
+  theme = bs_theme(version = 5),
+  title = "statcheck // web", 
+  collapsible = TRUE,
+  header = tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "css/styles.css"),
+    tags$script(
+      src = "https://kit.fontawesome.com/0c3170759b.js", 
+      crossorigin = "anonymous")
+  ),
+  tabPanel("Home",
+           tags$div(class = "container",
+                    tags$div(class = "center",
+                             tags$img(
+                               src = "./img/statcheck-cropped.png", 
+                               title = "statcheck",
+                               style = "max-width: 500px"),
+                             tags$p(class = "fw-bold fs-4", "statcheck on the web")
+                    ),
+                    tags$p(
+                      "To check a PDF, DOCX or HTML file for errors in statistical 
           reporting, upload it below. See the FAQ page for more information 
           about what statcheck can and cannot do."
         ),
@@ -97,6 +96,7 @@ ui <- navbarPage(
       )
     )
   )
+)
 
 # Server ------------------------------------------------------------------
 
@@ -109,12 +109,21 @@ server <- function(input, output) {
   outputOptions(output, "error", suspendWhenHidden = FALSE)
   
   observe({
-    file <- input$file
+    files <- input$files
     
     # Reset error messages when a new file is uploaded
     values$error <- NULL
+    
+    # Validate file types
+    valid_extensions <- c("pdf", "htm", "html", "doc", "docx")
+    invalid_files <- !tools::file_ext(files$name) %in% valid_extensions
+    if (any(invalid_files)) {
+      values$error <- "Please select only PDF, HTML, or Word files."
+      return(NULL)
+    }
+    
   })
-
+  
   # Render the statcheck results table
   output$table <- renderDataTable(
     extensions = "Buttons", 
@@ -131,87 +140,104 @@ server <- function(input, output) {
           ),
           text = 'Download'
         )
-      )
+        )
     ), 
     {
-      req(input$file)
-      file <- input$file
+      req(input$files)
+      files <- input$files # this creates a dataframe with file info
       
-      # Check whether the user supplied a PDF, HTML, or MS Word file
-      file_extension <- tools::file_ext(file$name)
+      # create empty list to store results of separate files
+      statcheck_results <- list() 
       
-      if (!file_extension %in% c("pdf", "htm", "html", "doc", "docx")) {
-        values$error <- "Please select a PDF, HTML, or Word file."
+      # Use progress indicator
+      withProgress(message = 'Processing files...', value = 0, {
         
-        return(NULL)
-      } 
-      
-      
-      # Extract text from the file, depending on the file extension
-      if (file_extension == "pdf") {
-        text <- pdftools::pdf_text(input$file$datapath)
-      } else if (file_extension %in% c("htm", "html"))  {
-        html <- paste(readLines(input$file$datapath), collapse = "\n")
-        text <- htm2txt::htm2txt(html)
-      } else if (file_extension %in% c("doc", "docx")) {
-        word <- readtext::readtext(input$file$datapath)
-        text <- word$text
-      }
-      
-      # Run statcheck
-      suppressMessages(
-        res <- statcheck::statcheck(text, OneTailedTxt = input$one_tail)
-      )
-      
-      # Print which statcheck version was run
-      version <- sessionInfo()$otherPkgs$statcheck$Version
-      output$sessionInfo <- renderText({
-        paste0("Statcheck package version: ", version)
+        # loop over files
+        for(i in 1:nrow(files)){
+          
+          file <- files[i, ]
+          
+          # Check whether the user supplied a PDF, HTML, or MS Word file
+          file_extension <- tools::file_ext(file$name)
+          
+          # Extract text from the file, depending on the file extension
+          if (file_extension == "pdf") {
+            text <- pdftools::pdf_text(file$datapath)
+          } else if (file_extension %in% c("htm", "html"))  {
+            html <- paste(readLines(file$datapath), collapse = "\n")
+            text <- htm2txt::htm2txt(html)
+          } else if (file_extension %in% c("doc", "docx")) {
+            word <- readtext::readtext(file$datapath)
+            text <- word$text
+          }
+          
+          # store filename to return in final dataframe
+          names(text) <- file$name
+          
+          # run statcheck in a try() environment to avoid the app from breaking
+          # if a paper throws an error
+          try_statcheck <- try(suppressMessages(
+            statcheck_results[[i]] <- 
+              statcheck::statcheck(text, OneTailedTxt = input$one_tail)
+          ))
+          
+          if(class(result) == "try-error"){
+            res <- NULL
+          } else {
+            res <- do.call(rbind, statcheck_results)
+          }
+        }
+        
+        # Print which statcheck version was run
+        version <- sessionInfo()$otherPkgs$statcheck$Version
+        output$sessionInfo <- renderText({
+          paste0("Statcheck package version: ", version)
         })
-      
-      # create a second session info for second conditional panel
-      # bit of a hacky solution...
-      output$sessionInfo2 <- renderText({
-        paste0("Statcheck package version: ", version)
-      })
-      
-      # Check whether any results were found
-      if (is.null(res)) {
-        values$error <- "No results found. See the FAQ page for some common 
-          reasons why statcheck doesn't detect some results."
         
-        return(NULL)
-      }
-      
-      # Check whether old or new variable names are used in results data frame
-      # If old: change to the new names to ensure compatibility with the app.
-      # This is a bit of a hacky solution to make sure the transition to the new
-      # statcheck version on CRAN goes smoothly. In time we can remove this code
-      if ("Source" %in% names(res)) {
-        names(res) <- c("source", "test_type", "df1", "df2",  "test_comp", 
-          "test_value", "p_comp", "reported_p", "computed_p", "raw", "error", 
-          "decision_error", "one_tailed_in_txt", "apa_factor")
-      }
-      
-      # Clean up the data frame
-      res$error <- ifelse(res$error == FALSE, "Consistent", ifelse(
-        res$decision_error == TRUE, "Decision Inconsistency", "Inconsistency")
-      )
-      
-      res <- subset(res, select = c(raw, computed_p, error))
-      
-      # Format the computer p-value column
-      res$computed_p <- sprintf("%.05f", res$computed_p)
-      
-      # Create human-friendly column names
-      names(res) <- c("Statistical reference", "Computed p-value", 
-        "Consistency")
-      
-      # All went well so store there is no error in case there previously was 
-      # one
-      values$error <- NULL
-
-      return(res)
+        # create a second session info for second conditional panel
+        # bit of a hacky solution...
+        output$sessionInfo2 <- renderText({
+          paste0("Statcheck package version: ", version)
+        })
+        
+        # Check whether any results were found
+        if (is.null(res)) {
+          values$error <- "No results found. See the FAQ page for some common 
+          reasons why statcheck doesn't detect some results."
+          
+          return(NULL)
+        }
+        
+        # Check whether old or new variable names are used in results data frame
+        # If old: change to the new names to ensure compatibility with the app.
+        # This is a bit of a hacky solution to make sure the transition to the new
+        # statcheck version on CRAN goes smoothly. In time we can remove this code
+        if ("Source" %in% names(res)) {
+          names(res) <- c("source", "test_type", "df1", "df2",  "test_comp", 
+                          "test_value", "p_comp", "reported_p", "computed_p", "raw", "error", 
+                          "decision_error", "one_tailed_in_txt", "apa_factor")
+        }
+        
+        # Clean up the data frame
+        res$error <- ifelse(res$error == FALSE, "Consistent", ifelse(
+          res$decision_error == TRUE, "Decision Inconsistency", "Inconsistency")
+        )
+        
+        res <- subset(res, select = c(source, raw, computed_p, error))
+        
+        # Format the computer p-value column
+        res$computed_p <- sprintf("%.05f", res$computed_p)
+        
+        # Create human-friendly column names
+        names(res) <- c("File", "Statistical reference", "Computed p-value", 
+                        "Consistency")
+        
+        # All went well so store that there is no error in case there previously was 
+        # one
+        values$error <- NULL
+        
+        return(res)
+      })
     }
   )
 }
