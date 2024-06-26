@@ -173,13 +173,18 @@ server <- function(input, output) {
           # store filename to return in final dataframe
           names(text) <- file$name
           
-          # Run statcheck
-          suppressMessages(
+          # run statcheck in a try() environment to avoid the app from breaking
+          # if a paper throws an error
+          try_statcheck <- try(suppressMessages(
             statcheck_results[[i]] <- 
               statcheck::statcheck(text, OneTailedTxt = input$one_tail)
-          )
+          ))
           
-          res <- do.call(rbind, statcheck_results)
+          if(class(result) == "try-error"){
+            res <- NULL
+          } else {
+            res <- do.call(rbind, statcheck_results)
+          }
         }
         
         # Print which statcheck version was run
