@@ -40,60 +40,61 @@ ui <- navbarPage(
                       "To check a PDF, DOCX or HTML file for errors in statistical 
           reporting, upload it below. See the FAQ page for more information 
           about what statcheck can and cannot do."
-                    ),
-                    hr(),
-                    fileInput(inputId = "files", 
-                              label = "Upload files (pdf, html, or docx):",
-                              multiple = TRUE,
-                              accept = c("pdf", "htm", "html", "doc", "docx")
-                    ),
-                    h5("Settings:", class = "settings"),
-                    checkboxInput("one_tail",
-                                  label = "Try to identify and correct for one-tailed tests",
-                                  value = FALSE,
-                                  width = "100%"
-                    ),
-                    hr(),
-                    conditionalPanel(
-                      condition = "!output.error",
-                      DT::dataTableOutput("table"),
-                      textOutput("sessionInfo")
-                    ),
-                    conditionalPanel(
-                      condition = "output.error",
-                      tags$div(
-                        class = "text-danger fw-bold",
-                        textOutput("error")
-                      )
-                    ),
-                    conditionalPanel(
-                      condition = "output.error",
-                      tags$div(
-                        class = "mt-3",
-                        textOutput("sessionInfo2")
-                      )
-                    )
-           ) 
-  ),
-  tabPanel("FAQ",
-           tags$div(class = "container",
-                    includeHTML("html/FAQ.html")
-           )
-  ),
-  tabPanel("Contact",
-           tags$div(class = "container",
-                    includeHTML("html/contact.html")
-           )
-  ),
-  tabPanel("Contributors",
-           tags$div(class = "container",
-                    includeHTML("html/contributors.html")
-           )
-  ),
-  tabPanel("MS Word Add-in",
-           tags$div(class = "container",
-                    includeHTML("html/word-addin.html")
-           )
+        ),
+        hr(),
+        fileInput("file", 
+          label = "Upload files (pdf, html, or docx):",
+          multiple = FALSE,
+          accept = c("pdf", "htm", "html", "doc", "docx")
+        ),
+        h5("Settings:", class = "settings"),
+        checkboxInput("one_tail",
+          label = "Try to identify and correct for one-tailed tests",
+          value = FALSE,
+          width = "100%"
+        ),
+        hr(),
+        conditionalPanel(
+          condition = "!output.error",
+          DT::dataTableOutput("table"),
+          textOutput("sessionInfo")
+        ),
+        conditionalPanel(
+          condition = "output.error",
+          tags$div(
+            class = "text-danger fw-bold",
+            textOutput("error")
+            )
+        ),
+        conditionalPanel(
+          condition = "output.error",
+          tags$div(
+            class = "mt-3",
+            textOutput("sessionInfo2")
+          )
+        )
+      ) 
+    ),
+    tabPanel("FAQ",
+      tags$div(class = "container",
+          includeHTML("html/FAQ.html")
+      )
+    ),
+    tabPanel("Contact",
+      tags$div(class = "container",
+        includeHTML("html/contact.html")
+      )
+    ),
+    tabPanel("Contributors",
+      tags$div(class = "container",
+        includeHTML("html/contributors.html")
+      )
+    ),
+    tabPanel("Software/Packages",
+      tags$div(class = "container",
+        includeHTML("html/software.html")
+      )
+    )
   )
 )
 
