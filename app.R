@@ -113,6 +113,15 @@ server <- function(input, output) {
     
     # Reset error messages when a new file is uploaded
     values$error <- NULL
+    
+    # Validate file types
+    valid_extensions <- c("pdf", "htm", "html", "doc", "docx")
+    invalid_files <- !tools::file_ext(files$name) %in% valid_extensions
+    if (any(invalid_files)) {
+      values$error <- "Please select only PDF, HTML, or Word files."
+      return(NULL)
+    }
+    
   })
   
   # Render the statcheck results table
@@ -134,16 +143,16 @@ server <- function(input, output) {
         )
     ), 
     {
-      req(input$file)
-      files <- input$files
+      req(input$files)
+      files <- input$files # this creates a dataframe with file info
       
       # create empty list to store results of separate files
       statcheck_results <- list() 
       
       # loop over files
-      for(i in seq_along(files)){
+      for(i in 1:nrow(files)){
         
-        file <- files[i]
+        file <- files[i, ]
         
         # Check whether the user supplied a PDF, HTML, or MS Word file
         file_extension <- tools::file_ext(file$name)
@@ -157,14 +166,17 @@ server <- function(input, output) {
         
         # Extract text from the file, depending on the file extension
         if (file_extension == "pdf") {
-          text <- pdftools::pdf_text(input$file$datapath)
+          text <- pdftools::pdf_text(file$datapath)
         } else if (file_extension %in% c("htm", "html"))  {
-          html <- paste(readLines(input$file$datapath), collapse = "\n")
+          html <- paste(readLines(file$datapath), collapse = "\n")
           text <- htm2txt::htm2txt(html)
         } else if (file_extension %in% c("doc", "docx")) {
-          word <- readtext::readtext(input$file$datapath)
+          word <- readtext::readtext(file$datapath)
           text <- word$text
         }
+        
+        # store filename to return in final dataframe
+        names(text) <- file$name
         
         # Run statcheck
         suppressMessages(
@@ -172,7 +184,7 @@ server <- function(input, output) {
             statcheck::statcheck(text, OneTailedTxt = input$one_tail)
         )
         
-        res <- merge(unlist(statcheck_results))
+        res <- do.call(rbind, statcheck_results)
       }
       
       # Print which statcheck version was run
@@ -210,16 +222,16 @@ server <- function(input, output) {
         res$decision_error == TRUE, "Decision Inconsistency", "Inconsistency")
       )
       
-      res <- subset(res, select = c(raw, computed_p, error))
+      res <- subset(res, select = c(source, raw, computed_p, error))
       
       # Format the computer p-value column
       res$computed_p <- sprintf("%.05f", res$computed_p)
       
       # Create human-friendly column names
-      names(res) <- c("Statistical reference", "Computed p-value", 
+      names(res) <- c("File", "Statistical reference", "Computed p-value", 
                       "Consistency")
       
-      # All went well so store there is no error in case there previously was 
+      # All went well so store that there is no error in case there previously was 
       # one
       values$error <- NULL
       
