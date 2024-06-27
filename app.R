@@ -176,17 +176,18 @@ server <- function(input, output) {
           # run statcheck in a try() environment to avoid the app from breaking
           # if a paper throws an error
           try_statcheck <- try(suppressMessages(
-            statcheck_results[[i]] <- 
               statcheck::statcheck(text, OneTailedTxt = input$one_tail)
           ))
           
-          if(class(result) == "try-error"){
-            res <- NULL
+          if("try-error" %in% class(try_statcheck)){
+            statcheck_results[[i]] <- NULL
           } else {
-            res <- do.call(rbind, statcheck_results)
+            statcheck_results[[i]] <- try_statcheck
           }
         }
         
+        res <- do.call(rbind, statcheck_results)
+  
         # Print which statcheck version was run
         version <- sessionInfo()$otherPkgs$statcheck$Version
         output$sessionInfo <- renderText({
