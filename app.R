@@ -19,84 +19,87 @@ options(shiny.maxRequestSize = 100 * 1024 ^ 2)
 # UI ----------------------------------------------------------------------
 
 ui <- navbarPage(
-    theme = bs_theme(version = 5),
-    title = "statcheck // web", 
-    collapsible = TRUE,
-    header = tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "css/styles.css"),
-      tags$script(
-        src = "https://kit.fontawesome.com/0c3170759b.js", 
-        crossorigin = "anonymous")
-    ),
-    tabPanel("Home",
-      tags$div(class = "container",
-        tags$div(class = "center",
-          tags$img(
-            src = "./img/statcheck-cropped.png", 
-            title = "statcheck",
-            style = "max-width: 500px"),
-          tags$p(class = "fw-bold fs-4", "statcheck on the web")
-        ),
-        tags$p(
-          "To check a PDF, DOCX or HTML file for errors in statistical 
+  theme = bs_theme(version = 5),
+  title = "statcheck // web", 
+  collapsible = TRUE,
+  header = tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "css/styles.css"),
+    tags$script(
+      src = "https://kit.fontawesome.com/0c3170759b.js", 
+      crossorigin = "anonymous")
+  ),
+  tabPanel("Home",
+           tags$div(class = "container",
+                    tags$div(class = "center",
+                             tags$img(
+                               src = "./img/statcheck-cropped.png", 
+                               title = "statcheck",
+                               style = "max-width: 500px"),
+                             tags$p(class = "fw-bold fs-4", "statcheck on the web")
+                    ),
+                    tags$p(
+                      "To check a PDF, DOCX or HTML file for errors in statistical 
           reporting, upload it below. See the FAQ page for more information 
           about what statcheck can and cannot do."
-        ),
-        hr(),
-        fileInput("file", 
-          label = "Upload files (pdf, html, or docx):",
-          multiple = FALSE,
-          accept = c("pdf", "htm", "html", "doc", "docx")
-        ),
-        h5("Settings:", class = "settings"),
-        checkboxInput("one_tail",
-          label = "Try to identify and correct for one-tailed tests",
-          value = FALSE,
-          width = "100%"
-        ),
-        hr(),
-        conditionalPanel(
-          condition = "!output.error",
-          DT::dataTableOutput("table"),
-          textOutput("sessionInfo")
-        ),
-        conditionalPanel(
-          condition = "output.error",
-          tags$div(
-            class = "text-danger fw-bold",
-            textOutput("error")
-            )
-        ),
-        conditionalPanel(
-          condition = "output.error",
-          tags$div(
-            class = "mt-3",
-            textOutput("sessionInfo2")
-          )
-        )
-      ) 
-    ),
-    tabPanel("FAQ",
-      tags$div(class = "container",
-          includeHTML("html/FAQ.html")
-      )
-    ),
-    tabPanel("Contact",
-      tags$div(class = "container",
-        includeHTML("html/contact.html")
-      )
-    ),
-    tabPanel("Contributors",
-      tags$div(class = "container",
-        includeHTML("html/contributors.html")
-      )
-    ),
-    tabPanel("Software/Packages",
-      tags$div(class = "container",
-        includeHTML("html/software.html")
-      )
-    )
+                    ),
+                    hr(),
+                    fileInput("file", 
+                              label = "Upload files (pdf, html, or docx):",
+                              multiple = FALSE,
+                              accept = c("pdf", "htm", "html", "doc", "docx")
+                    ),
+                    textInput("text",
+                              label = "Copy-paste text containing NHST results here:"
+                    ),
+                    h5("Settings:", class = "settings"),
+                    checkboxInput("one_tail",
+                                  label = "Try to identify and correct for one-tailed tests",
+                                  value = FALSE,
+                                  width = "100%"
+                    ),
+                    hr(),
+                    conditionalPanel(
+                      condition = "!output.error",
+                      DT::dataTableOutput("table"),
+                      textOutput("sessionInfo")
+                    ),
+                    conditionalPanel(
+                      condition = "output.error",
+                      tags$div(
+                        class = "text-danger fw-bold",
+                        textOutput("error")
+                      )
+                    ),
+                    conditionalPanel(
+                      condition = "output.error",
+                      tags$div(
+                        class = "mt-3",
+                        textOutput("sessionInfo2")
+                      )
+                    )
+           ) 
+  ),
+  tabPanel("FAQ",
+           tags$div(class = "container",
+                    includeHTML("html/FAQ.html")
+           )
+  ),
+  tabPanel("Contact",
+           tags$div(class = "container",
+                    includeHTML("html/contact.html")
+           )
+  ),
+  tabPanel("Contributors",
+           tags$div(class = "container",
+                    includeHTML("html/contributors.html")
+           )
+  ),
+  tabPanel("Software/Packages",
+           tags$div(class = "container",
+                    includeHTML("html/software.html")
+           )
   )
+)
 
 # Server ------------------------------------------------------------------
 
@@ -114,7 +117,7 @@ server <- function(input, output) {
     # Reset error messages when a new file is uploaded
     values$error <- NULL
   })
-
+  
   # Render the statcheck results table
   output$table <- renderDataTable(
     extensions = "Buttons", 
@@ -131,31 +134,42 @@ server <- function(input, output) {
           ),
           text = 'Download'
         )
-      )
+        )
     ), 
     {
-      req(input$file)
-      file <- input$file
+     
+      # only give output if there is either a file or text upload
+      req(input$file|input$text)
       
-      # Check whether the user supplied a PDF, HTML, or MS Word file
-      file_extension <- tools::file_ext(file$name)
-      
-      if (!file_extension %in% c("pdf", "htm", "html", "doc", "docx")) {
-        values$error <- "Please select a PDF, HTML, or Word file."
+      # parse text from uploaded file
+      if(input$file){
+        file <- input$file
         
-        return(NULL)
-      } 
+        # Check whether the user supplied a PDF, HTML, or MS Word file
+        file_extension <- tools::file_ext(file$name)
+        
+        if (!file_extension %in% c("pdf", "htm", "html", "doc", "docx")) {
+          values$error <- "Please select a PDF, HTML, or Word file."
+          
+          return(NULL)
+        } 
+        
+        
+        # Extract text from the file, depending on the file extension
+        if (file_extension == "pdf") {
+          text <- pdftools::pdf_text(input$file$datapath)
+        } else if (file_extension %in% c("htm", "html"))  {
+          html <- paste(readLines(input$file$datapath), collapse = "\n")
+          text <- htm2txt::htm2txt(html)
+        } else if (file_extension %in% c("doc", "docx")) {
+          word <- readtext::readtext(input$file$datapath)
+          text <- word$text
+        }
+      }
       
-      
-      # Extract text from the file, depending on the file extension
-      if (file_extension == "pdf") {
-        text <- pdftools::pdf_text(input$file$datapath)
-      } else if (file_extension %in% c("htm", "html"))  {
-        html <- paste(readLines(input$file$datapath), collapse = "\n")
-        text <- htm2txt::htm2txt(html)
-      } else if (file_extension %in% c("doc", "docx")) {
-        word <- readtext::readtext(input$file$datapath)
-        text <- word$text
+      # or: use text from text box
+      if(input$text){
+        text <- input$text
       }
       
       # Run statcheck
@@ -167,7 +181,7 @@ server <- function(input, output) {
       version <- sessionInfo()$otherPkgs$statcheck$Version
       output$sessionInfo <- renderText({
         paste0("Statcheck package version: ", version)
-        })
+      })
       
       # create a second session info for second conditional panel
       # bit of a hacky solution...
@@ -189,8 +203,8 @@ server <- function(input, output) {
       # statcheck version on CRAN goes smoothly. In time we can remove this code
       if ("Source" %in% names(res)) {
         names(res) <- c("source", "test_type", "df1", "df2",  "test_comp", 
-          "test_value", "p_comp", "reported_p", "computed_p", "raw", "error", 
-          "decision_error", "one_tailed_in_txt", "apa_factor")
+                        "test_value", "p_comp", "reported_p", "computed_p", "raw", "error", 
+                        "decision_error", "one_tailed_in_txt", "apa_factor")
       }
       
       # Clean up the data frame
@@ -205,12 +219,12 @@ server <- function(input, output) {
       
       # Create human-friendly column names
       names(res) <- c("Statistical reference", "Computed p-value", 
-        "Consistency")
+                      "Consistency")
       
       # All went well so store there is no error in case there previously was 
       # one
       values$error <- NULL
-
+      
       return(res)
     }
   )
