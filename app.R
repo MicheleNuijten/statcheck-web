@@ -57,6 +57,7 @@ ui <- navbarPage(
                     conditionalPanel(
                       condition = "!output.error",
                       DT::dataTableOutput("table"),
+                      downloadButton("report", "Download report"),
                       textOutput("sessionInfo")
                     ),
                     conditionalPanel(
@@ -100,8 +101,8 @@ ui <- navbarPage(
 # Server ------------------------------------------------------------------
 
 server <- function(input, output) {
-  # Create variables to store an error status in
-  values <- reactiveValues(error = NULL)
+  # Create variables to store statcheck results and error status
+  values <- reactiveValues(res = NULL, error = NULL)
   
   # Render the error message
   output$error <- renderText(values$error)
@@ -236,8 +237,35 @@ server <- function(input, output) {
         # one
         values$error <- NULL
         
+        # store result in a reactive value so that it can be accessed outside
+        # this function as wel
+        values$res <- res
+        
         return(res)
       })
+    }
+  )
+  
+  # Render the report
+  output$report <- downloadHandler(
+    
+    filename = function() {
+      paste("statcheck_report_", Sys.Date(), ".pdf", sep = "")
+    },
+    
+    content = function(file) {
+      req(values$res)  # Ensure `res` is available
+      
+      # Copy the report template to a temporary location
+      tempReport <- file.path(tempdir(), "report_template.Rmd")
+      file.copy("templates/report_template.Rmd", tempReport, overwrite = TRUE)
+      
+      # Knit the document, passing the `params` list, and evaluate in an 
+      # isolated environment
+      rmarkdown::render(tempReport, output_file = file,
+                        params = list(results = values$res),  # Pass `res` as parameter
+                        output_format = "pdf_document",
+                        envir = new.env(parent = globalenv()))
     }
   )
 }

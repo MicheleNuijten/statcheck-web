@@ -1,0 +1,25 @@
+---
+title: "Statcheck Results Report"
+output: pdf_document
+params:
+  results: NULL
+---
+
+```{r setup, include=FALSE}
+# Ensure knitr and kableExtra are available
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(kableExtra)
+```
+
+```{r}
+# Access the results passed via params
+results <- params$results
+
+if (!is.null(results)) {
+  # Render the table using kable for PDF output
+  kable(results, caption = "Statcheck Results Table")
+} else {
+  cat("No results available.")
+}
+```
