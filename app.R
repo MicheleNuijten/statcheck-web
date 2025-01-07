@@ -276,10 +276,20 @@ server <- function(input, output) {
       tempImg <- file.path(tempdir(), "statcheck-cropped.png")
       file.copy("www/img/statcheck-cropped.png", tempImg, overwrite = TRUE)
       
+      # Collect additional information
+      file_name <- input$files$name
+      date <- Sys.Date()
+      statcheck_version <- sessionInfo()$otherPkgs$statcheck$Version
+      one_tailed <- ifelse(input$one_tail, "On", "Off")
+      
       # Knit the document, passing the `params` list, and evaluate in an 
       # isolated environment
       rmarkdown::render(tempReport, output_file = file,
-                        params = list(results = values$res),  # Pass `res` as parameter
+                        params = list(results = values$res, 
+                                      file_name = file_name,
+                                      date = date,
+                                      statcheck_version = statcheck_version,
+                                      one_tailed = one_tailed),  
                         output_format = "pdf_document",
                         envir = new.env(parent = globalenv()))
     }

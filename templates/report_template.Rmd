@@ -3,6 +3,10 @@ title: "statcheck on the web // report"
 output: pdf_document
 params:
   results: NULL
+  file_name: NULL
+  date: NULL
+  statcheck_version: NULL
+  one_tailed: NULL
 ---
 
 ```{r setup, include=FALSE}
@@ -54,3 +58,12 @@ if (!is.null(results)) {
 # version statcheck
 # identified for one-tailed tests?
 ```
+
+**File Name:** `r params$file_name`
+
+**Date:** `r params$date`
+
+**Statcheck Version:** `r params$statcheck_version`
+
+**One-Tailed Test Detection:** `r params$one_tailed`
+
