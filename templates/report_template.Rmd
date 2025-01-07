@@ -9,7 +9,6 @@ params:
 # Ensure knitr and kableExtra are available
 knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
-library(kableExtra)
 ```
 
 ```{r}
@@ -22,4 +21,9 @@ if (!is.null(results)) {
 } else {
   cat("No results available.")
 }
+
+
+# file name
+# version statcheck
+# identified for one-tailed tests?
 ```
