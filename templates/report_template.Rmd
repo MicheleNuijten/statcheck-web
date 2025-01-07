@@ -1,5 +1,5 @@
 ---
-title: "Statcheck Results Report"
+title: "statcheck on the web // report"
 output: pdf_document
 params:
   results: NULL
@@ -11,13 +11,40 @@ knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
 ```
 
+```{=tex}
+\begin{center}
+  \includegraphics[width=0.5\textwidth]{statcheck-cropped.png}
+\end{center}
+```
+# What is statcheck?
+
+Statcheck is a "spellchecker" for statistics. It searches text for Null Hypothesis Significance Tests (NHST), reported according to the guidelines of the American Psychology Association (APA), and checks if the reported p-values match their accompanying test statistic and degrees of freedom. Statcheck classifies the detected results in one of three categories:
+
+| Classification             | Explanation                                                                                                                               |
+|---------------------|---------------------------------------------------|
+| **Consistent**             | The reported p-value matches its test statistic and degrees of freedom.                                                                   |
+| **Inconsistency**          | The reported p-value does not match its test statistic and degrees of freedom.                                                            |
+| **Decision Inconsistency** | The reported p-value is \< .05, whereas the computed p-value based on the test statistic and degrees of freedom is \> .05, or vice versa. |
+
+Please note:
+
+-   statcheck is automated software that can potentially misread or misclassify a result.
+-   an inconsistent result can be due to a mistake in a reported p-value, test statistic, degrees of freedom, or a combination of these elements.
+-   in some cases, a result is deliberately reported inconsistently (e.g., authors sometimes opt to adjust one element in the reported results to reflect a statistical correction, such as an adjusted p-value instead of a corrected alpha-level in a Bonferroni correction).
+
+We strongly advise against making decisions about a manuscript based solely on a statcheck report.
+
+For more information about what statcheck can and cannot do, please take a look at the FAQ page at <https://statcheck.io>.
+
+# Results
+
 ```{r}
 # Access the results passed via params
 results <- params$results
 
 if (!is.null(results)) {
   # Render the table using kable for PDF output
-  kable(results, caption = "Statcheck Results Table")
+  kable(results)
 } else {
   cat("No results available.")
 }

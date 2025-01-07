@@ -61,7 +61,7 @@ ui <- navbarPage(
                     ),
                     
                     # Only show the download button if there are results
-                    uiOutput("downloadButtonUI"),  # Dynamically show the download button
+                    uiOutput("downloadButtonUI"), 
                     
                     conditionalPanel(
                       condition = "output.error",
@@ -273,6 +273,8 @@ server <- function(input, output) {
       # Copy the report template to a temporary location
       tempReport <- file.path(tempdir(), "report_template.Rmd")
       file.copy("templates/report_template.Rmd", tempReport, overwrite = TRUE)
+      tempImg <- file.path(tempdir(), "statcheck-cropped.png")
+      file.copy("www/img/statcheck-cropped.png", tempImg, overwrite = TRUE)
       
       # Knit the document, passing the `params` list, and evaluate in an 
       # isolated environment
