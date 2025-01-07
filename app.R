@@ -57,9 +57,12 @@ ui <- navbarPage(
                     conditionalPanel(
                       condition = "!output.error",
                       DT::dataTableOutput("table"),
-                      downloadButton("report", "Download report"),
                       textOutput("sessionInfo")
                     ),
+                    
+                    # Only show the download button if there are results
+                    uiOutput("downloadButtonUI"),  # Dynamically show the download button
+                    
                     conditionalPanel(
                       condition = "output.error",
                       tags$div(
@@ -245,6 +248,17 @@ server <- function(input, output) {
       })
     }
   )
+  
+  
+  # Conditionally render the download button if there are results
+  output$downloadButtonUI <- renderUI({
+    req(values$res)  # Ensure that results are available
+    
+    # Only render the download button if there are results
+    if (!is.null(values$res) && nrow(values$res) > 0) {
+      downloadButton("report", "Download report")
+    }
+  })
   
   # Render the report
   output$report <- downloadHandler(
