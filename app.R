@@ -54,14 +54,15 @@ ui <- navbarPage(
                                   width = "100%"
                     ),
                     hr(),
+                    
+                    # Only show the download button if there are results
+                    uiOutput("downloadButtonUI"), 
+                    
                     conditionalPanel(
                       condition = "!output.error",
                       DT::dataTableOutput("table"),
                       textOutput("sessionInfo")
                     ),
-                    
-                    # Only show the download button if there are results
-                    uiOutput("downloadButtonUI"), 
                     
                     conditionalPanel(
                       condition = "output.error",

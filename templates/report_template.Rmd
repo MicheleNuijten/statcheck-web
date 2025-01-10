@@ -20,6 +20,45 @@ library(knitr)
   \includegraphics[width=0.5\textwidth]{statcheck-cropped.png}
 \end{center}
 ```
+
+------------------------------------------------------------------------
+
+# Results
+
+**File Name:** `r params$file_name`
+
+**Date:** `r params$date`
+
+**Statcheck Version:** `r params$statcheck_version`
+
+**One-Tailed Test Detection:** `r params$one_tailed`
+
+```{r}
+# Access the results passed via params
+results <- params$results
+
+if (!is.null(results)) {
+  # Render the table using kable for PDF output
+  kable(results)
+} else {
+  cat("No results available.")
+}
+```
+
+```{r, include = FALSE}
+# calculate summary results
+total_results <- nrow(results)
+total_consistent <- sum(results$Consistency == "Consistent")
+total_inconsistent <- sum(results$Consistency == "Inconsistency")
+total_dec_inconsistent <- sum(results$Consistency == "Decision Inconsistency")
+```
+
+In total, statcheck detected `r total_results` statistical results reported in APA style. Of these, `r total_consistent` `r if(total_consistent == 1) "is" else "are"` consistent, `r total_inconsistent` `r if(total_inconsistent == 1) "is" else "are"` inconsistent, and `r total_dec_inconsistent` `r if(total_dec_inconsistent == 1) "is" else "are"` a decision inconsistency.
+
+------------------------------------------------------------------------
+
+\pagebreak
+
 # What is statcheck?
 
 Statcheck is a "spellchecker" for statistics. It searches text for Null Hypothesis Significance Tests (NHST), reported according to the guidelines of the American Psychology Association (APA), and checks if the reported p-values match their accompanying test statistic and degrees of freedom. Statcheck classifies the detected results in one of three categories:
@@ -39,25 +78,4 @@ Statcheck is a "spellchecker" for statistics. It searches text for Null Hypothes
 ***We strongly advise against making decisions about a manuscript based solely on a statcheck report.***
 
 For more information about what statcheck can and cannot do, please take a look at the FAQ page at <https://statcheck.io>.
-
-------------------------------------------------------------------------
-
-# Results
-
-**File Name:** `r params$file_name`
-**Date:** `r params$date`
-**Statcheck Version:** `r params$statcheck_version`
-**One-Tailed Test Detection:** `r params$one_tailed`
-
-```{r}
-# Access the results passed via params
-results <- params$results
-
-if (!is.null(results)) {
-  # Render the table using kable for PDF output
-  kable(results)
-} else {
-  cat("No results available.")
-}
-```
 
