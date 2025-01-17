@@ -56,7 +56,9 @@ ui <- navbarPage(
                     hr(),
                     
                     # Only show the download button if there are results
+                    uiOutput("downloadButtonTxt"),
                     uiOutput("downloadButtonUI"), 
+                    
                     
                     HTML("<br><br>"),
                     
@@ -254,6 +256,15 @@ server <- function(input, output) {
   
   
   # Conditionally render the download button if there are results
+  output$downloadButtonTxt <- renderUI({
+    req(values$res)  # Ensure that results are available
+    
+    # Only render the next to the download button if there are results
+    if (!is.null(values$res) && nrow(values$res) > 0) {
+      HTML("<em>Downloading the report may take a few moments.</em>")
+    }
+  })
+  
   output$downloadButtonUI <- renderUI({
     req(values$res)  # Ensure that results are available
     
