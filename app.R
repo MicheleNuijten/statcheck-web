@@ -58,6 +58,8 @@ ui <- navbarPage(
                     # Only show the download button if there are results
                     uiOutput("downloadButtonUI"), 
                     
+                    HTML("<br><br>"),
+                    
                     conditionalPanel(
                       condition = "!output.error",
                       DT::dataTableOutput("table"),
@@ -142,7 +144,7 @@ server <- function(input, output) {
             list(extend = 'excel', filename = input$file$name),
             list(extend = 'pdf', filename = input$file$name)
           ),
-          text = 'Download'
+          text = 'Download table'
         )
         )
     ), 
