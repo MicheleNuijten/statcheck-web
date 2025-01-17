@@ -17,7 +17,7 @@ library(knitr)
 
 ```{=tex}
 \begin{center}
-  \includegraphics[width=0.5\textwidth]{statcheck-cropped.png}
+\includegraphics[width=0.5\textwidth]{statcheck-cropped.png}
 \end{center}
 ```
 
@@ -46,11 +46,19 @@ if (!is.null(results)) {
 ```
 
 ```{r, include = FALSE}
-# calculate summary results
-total_results <- nrow(results)
-total_consistent <- sum(results$Consistency == "Consistent")
-total_inconsistent <- sum(results$Consistency == "Inconsistency")
-total_dec_inconsistent <- sum(results$Consistency == "Decision Inconsistency")
+if(!is.null(results)){
+  # calculate summary results
+  total_results <- nrow(results)
+  total_consistent <- sum(results$Consistency == "Consistent")
+  total_inconsistent <- sum(results$Consistency == "Inconsistency")
+  total_dec_inconsistent <- sum(results$Consistency == "Decision Inconsistency")
+} else {
+  total_results <- 
+    total_consistent <- 
+    total_inconsistent <- 
+    total_dec_inconsistent <- 
+    0
+}
 ```
 
 In total, statcheck detected `r total_results` statistical results reported in APA style. Of these, `r total_consistent` `r if(total_consistent == 1) "is" else "are"` consistent, `r total_inconsistent` `r if(total_inconsistent == 1) "is" else "are"` inconsistent, and `r total_dec_inconsistent` `r if(total_dec_inconsistent == 1) "is" else "are"` a decision inconsistency.
