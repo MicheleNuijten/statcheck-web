@@ -50,7 +50,7 @@ ui <- navbarPage(
                     h5("Settings:", class = "settings"),
                     checkboxInput("one_tail",
                                   label = "Try to identify and correct for one-tailed tests",
-                                  value = FALSE,
+                                  value = TRUE,
                                   width = "100%"
                     ),
                     hr(),
