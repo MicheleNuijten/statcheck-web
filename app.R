@@ -54,11 +54,20 @@ ui <- navbarPage(
                                   width = "100%"
                     ),
                     hr(),
+                    
+                    # Only show the download button if there are results
+                    uiOutput("downloadButtonTxt"),
+                    uiOutput("downloadButtonUI"), 
+                    
+                    
+                    HTML("<br><br>"),
+                    
                     conditionalPanel(
                       condition = "!output.error",
                       DT::dataTableOutput("table"),
                       textOutput("sessionInfo")
                     ),
+                    
                     conditionalPanel(
                       condition = "output.error",
                       tags$div(
@@ -100,8 +109,8 @@ ui <- navbarPage(
 # Server ------------------------------------------------------------------
 
 server <- function(input, output) {
-  # Create variables to store an error status in
-  values <- reactiveValues(error = NULL)
+  # Create variables to store statcheck results and error status
+  values <- reactiveValues(res = NULL, error = NULL)
   
   # Render the error message
   output$error <- renderText(values$error)
@@ -137,7 +146,7 @@ server <- function(input, output) {
             list(extend = 'excel', filename = input$file$name),
             list(extend = 'pdf', filename = input$file$name)
           ),
-          text = 'Download'
+          text = 'Download table'
         )
         )
     ), 
@@ -205,6 +214,9 @@ server <- function(input, output) {
           values$error <- "No results found. See the FAQ page for some common 
           reasons why statcheck doesn't detect some results."
           
+          # store empty df in res, in order to generate "empty" statcheck report
+          values$res <- data.frame()
+          
           return(NULL)
         }
         
@@ -236,8 +248,65 @@ server <- function(input, output) {
         # one
         values$error <- NULL
         
+        # store result in a reactive value so that it can be accessed outside
+        # this function as wel
+        values$res <- res
+        
         return(res)
       })
+    }
+  )
+  
+  
+  # Conditionally render the download button if statcheck correctly ran
+  output$downloadButtonTxt <- renderUI({
+    req(values$res)  # Ensure that results are available
+    
+    if (!is.null(values$res)) {
+      HTML("<em>Generating the report may take a few moments.</em>")
+    }
+  })
+  
+  output$downloadButtonUI <- renderUI({
+    req(values$res)  # Ensure that results are available
+    
+    if (!is.null(values$res)) {
+      downloadButton("report", "Download report")
+    }
+  })
+  
+  # Render the report
+  output$report <- downloadHandler(
+    
+    filename = function() {
+      paste("statcheck_report_", Sys.Date(), ".pdf", sep = "")
+    },
+    
+    content = function(file) {
+      req(values$res)  # Ensure `res` is available
+      
+      # Copy the report template to a temporary location
+      tempReport <- file.path(tempdir(), "report_template.Rmd")
+      file.copy("templates/report_template.Rmd", tempReport, overwrite = TRUE)
+      tempImg <- file.path(tempdir(), "statcheck-cropped.png")
+      file.copy("www/img/statcheck-cropped.png", tempImg, overwrite = TRUE)
+      
+      # Collect additional information
+      file_name <- input$files$name
+      date <- Sys.Date()
+      statcheck_version <- sessionInfo()$otherPkgs$statcheck$Version
+      one_tailed <- ifelse(input$one_tail, "On", "Off")
+      
+      # Knit the document, passing the `params` list, and evaluate in an 
+      # isolated environment
+      rmarkdown::render(tempReport, output_file = file,
+                        params = list(results = values$res, 
+                                      file_name = file_name,
+                                      date = date,
+                                      statcheck_version = statcheck_version,
+                                      one_tailed = one_tailed),  
+                        output_format = "pdf_document",
+                        envir = new.env(parent = globalenv()))
     }
   )
 }
