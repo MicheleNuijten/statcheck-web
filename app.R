@@ -214,6 +214,9 @@ server <- function(input, output) {
           values$error <- "No results found. See the FAQ page for some common 
           reasons why statcheck doesn't detect some results."
           
+          # store empty df in res, in order to generate "empty" statcheck report
+          values$res <- data.frame()
+          
           return(NULL)
         }
         
@@ -255,21 +258,19 @@ server <- function(input, output) {
   )
   
   
-  # Conditionally render the download button if there are results
+  # Conditionally render the download button if statcheck correctly ran
   output$downloadButtonTxt <- renderUI({
     req(values$res)  # Ensure that results are available
     
-    # Only render the next to the download button if there are results
-    if (!is.null(values$res) && nrow(values$res) > 0) {
-      HTML("<em>Downloading the report may take a few moments.</em>")
+    if (!is.null(values$res)) {
+      HTML("<em>Generating the report may take a few moments.</em>")
     }
   })
   
   output$downloadButtonUI <- renderUI({
     req(values$res)  # Ensure that results are available
     
-    # Only render the download button if there are results
-    if (!is.null(values$res) && nrow(values$res) > 0) {
+    if (!is.null(values$res)) {
       downloadButton("report", "Download report")
     }
   })
