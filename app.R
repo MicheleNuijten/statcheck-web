@@ -50,7 +50,7 @@ ui <- navbarPage(
                     h5("Settings:", class = "settings"),
                     checkboxInput("one_tail",
                                   label = "Try to identify and correct for one-tailed tests",
-                                  value = FALSE,
+                                  value = TRUE,
                                   width = "100%"
                     ),
                     hr(),
@@ -220,15 +220,10 @@ server <- function(input, output) {
           return(NULL)
         }
         
-        # Check whether old or new variable names are used in results data frame
-        # If old: change to the new names to ensure compatibility with the app.
-        # This is a bit of a hacky solution to make sure the transition to the new
-        # statcheck version on CRAN goes smoothly. In time we can remove this code
-        if ("Source" %in% names(res)) {
-          names(res) <- c("source", "test_type", "df1", "df2",  "test_comp", 
-                          "test_value", "p_comp", "reported_p", "computed_p", "raw", "error", 
-                          "decision_error", "one_tailed_in_txt", "apa_factor")
-        }
+        # replace chi symbol in raw result by letter X to avoid errors in 
+        # compiling latex report
+        chi2raw_loc <- which(res$test_type == "Chi2")
+        res$raw[chi2raw_loc] <- gsub("^[^\\(]+", "X2", res$raw[chi2raw_loc])
         
         # Clean up the data frame
         res$error <- ifelse(res$error == FALSE, "Consistent", ifelse(
@@ -237,7 +232,7 @@ server <- function(input, output) {
         
         res <- subset(res, select = c(source, raw, computed_p, error))
         
-        # Format the computer p-value column
+        # Format the computed p-value column
         res$computed_p <- sprintf("%.05f", res$computed_p)
         
         # Create human-friendly column names

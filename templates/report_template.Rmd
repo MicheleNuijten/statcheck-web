@@ -57,7 +57,7 @@ if (nrow(results) > 0) {
 # Summary
 `r if (nrow(results) > 0) paste( "In total, statcheck detected", total_results, "statistical results reported in APA style.", "Of these,", total_consistent, if (total_consistent == 1) "is" else "are", "consistent,", total_inconsistent, if (total_inconsistent == 1) "is" else "are", "inconsistent,", "and", total_dec_inconsistent, if (total_dec_inconsistent == 1) "is" else "are", "a decision inconsistency." )`
 
-`r if (nrow(results) == 0) paste0("**Statcheck did not detect any APA-reported Null Hypothesis Significance Tests.** \\newline \\newline ", "If you think your document does contain tests that statcheck should have picked up, please check if the results are reported completely ", "(i.e., a test statistic, degrees of freedom when applicable, and a p-value) and in APA reporting style. Another common reason why statcheck may not detect results is when there are issues in PDF conversion, in which case you could try uploading the file in HTML or DOCX, if available. \\newline \\newline ", "For more information on what statcheck can and cannot detect, please see the FAQ page at https://statcheck.io.")` 
+`r if (nrow(results) == 0) paste0("**Statcheck did not detect any APA-reported Null Hypothesis Significance Tests.** \\newline \\newline ", "If you think your document does contain tests that statcheck should have picked up, please check if the results are reported completely ", "(i.e., a test statistic, degrees of freedom when applicable, and a p-value) and in APA reporting style. Another common reason why statcheck may not detect results is when there are issues in PDF conversion, in which case you could try uploading the file in HTML or DOCX, if available. \\newline \\newline ", "For more information on what statcheck can and cannot detect, please see the FAQ page at http://statcheck.io.")` 
 
 ------------------------------------------------------------------------
 
@@ -81,5 +81,5 @@ Statcheck is a "spellchecker" for statistics. It searches text for Null Hypothes
 
 ***We strongly advise against making decisions about a manuscript based solely on a statcheck report.***
 
-For more information about what statcheck can and cannot do, please take a look at the FAQ page at <https://statcheck.io>.
+For more information about what statcheck can and cannot do, please take a look at the FAQ page at <http://statcheck.io>.
 
