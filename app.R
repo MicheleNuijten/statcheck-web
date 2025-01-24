@@ -220,6 +220,11 @@ server <- function(input, output) {
           return(NULL)
         }
         
+        # replace chi symbol in raw result by letter X to avoid errors in 
+        # compiling latex report
+        chi2raw_loc <- which(res$test_type == "Chi2")
+        res$raw[chi2raw_loc] <- gsub("^[^\\(]+", "X2", res$raw[chi2raw_loc])
+        
         # Clean up the data frame
         res$error <- ifelse(res$error == FALSE, "Consistent", ifelse(
           res$decision_error == TRUE, "Decision Inconsistency", "Inconsistency")
@@ -227,7 +232,7 @@ server <- function(input, output) {
         
         res <- subset(res, select = c(source, raw, computed_p, error))
         
-        # Format the computer p-value column
+        # Format the computed p-value column
         res$computed_p <- sprintf("%.05f", res$computed_p)
         
         # Create human-friendly column names
