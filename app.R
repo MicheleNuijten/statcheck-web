@@ -220,16 +220,6 @@ server <- function(input, output) {
           return(NULL)
         }
         
-        # Check whether old or new variable names are used in results data frame
-        # If old: change to the new names to ensure compatibility with the app.
-        # This is a bit of a hacky solution to make sure the transition to the new
-        # statcheck version on CRAN goes smoothly. In time we can remove this code
-        if ("Source" %in% names(res)) {
-          names(res) <- c("source", "test_type", "df1", "df2",  "test_comp", 
-                          "test_value", "p_comp", "reported_p", "computed_p", "raw", "error", 
-                          "decision_error", "one_tailed_in_txt", "apa_factor")
-        }
-        
         # Clean up the data frame
         res$error <- ifelse(res$error == FALSE, "Consistent", ifelse(
           res$decision_error == TRUE, "Decision Inconsistency", "Inconsistency")
