@@ -182,8 +182,10 @@ server <- function(input, output) {
             } else {
               statcheck_results[[i]] <- try_checkpdf
               
-              # add filename to source column
-              statcheck_results[[i]]$source <- file$name
+              if(!is.null(try_checkpdf)){
+                # add filename to source column
+                statcheck_results[[i]]$source <- file$name
+              }
             }
             
             
@@ -199,8 +201,10 @@ server <- function(input, output) {
             } else {
               statcheck_results[[i]] <- try_checkhtml
               
-              # add filename to source column
-              statcheck_results[[i]]$source <- file$name
+              if(!is.null(try_checkhtml)){
+                # add filename to source column
+                statcheck_results[[i]]$source <- file$name
+              }
             }
             
             
@@ -233,7 +237,7 @@ server <- function(input, output) {
         }
         
         res <- do.call(rbind, statcheck_results)
-  
+        
         # Print which statcheck version was run
         version <- sessionInfo()$otherPkgs$statcheck$Version
         output$sessionInfo <- renderText({
