@@ -170,7 +170,7 @@ server <- function(input, output) {
           
           # Extract text from the file, depending on the file extension
           if (file_extension == "pdf") {
-            text <- pdftools::pdf_text(file$datapath)
+            text <- paste(pdftools::pdf_text(file$datapath), collapse = "\n")
           } else if (file_extension %in% c("htm", "html"))  {
             html <- paste(readLines(file$datapath), collapse = "\n")
             text <- htm2txt::htm2txt(html)
