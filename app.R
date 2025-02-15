@@ -174,7 +174,7 @@ server <- function(input, output) {
           if (file_extension == "pdf") {
             
             try_checkpdf <- try(suppressMessages(
-              checkPDF(file$datapath, OneTailedTxt = input$one_tail)
+              statcheck::checkPDF(file$datapath, OneTailedTxt = input$one_tail)
             ))
             
             if("try-error" %in% class(try_checkpdf)){
@@ -193,7 +193,7 @@ server <- function(input, output) {
           } else if (file_extension %in% c("htm", "html"))  {
             
             try_checkhtml <- try(suppressMessages(
-              checkHTML(file$datapath, OneTailedTxt = input$one_tail)
+              statcheck::checkHTML(file$datapath, OneTailedTxt = input$one_tail)
             ))
             
             if("try-error" %in% class(try_checkhtml)){
