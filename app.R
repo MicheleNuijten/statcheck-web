@@ -168,72 +168,31 @@ server <- function(input, output) {
           # Check whether the user supplied a PDF, HTML, or MS Word file
           file_extension <- tools::file_ext(file$name)
           
-          # Different file types require different strategies to run statcheck
-          
-          # PDF -----------
+          # Extract text from the file, depending on the file extension
           if (file_extension == "pdf") {
-            
-            try_checkpdf <- try(suppressMessages(
-              statcheck::checkPDF(file$datapath, OneTailedTxt = input$one_tail)
-            ))
-            
-            if("try-error" %in% class(try_checkpdf)){
-              statcheck_results[[i]] <- NULL
-            } else {
-              statcheck_results[[i]] <- try_checkpdf
-              
-              if(!is.null(try_checkpdf)){
-                # add filename to source column
-                statcheck_results[[i]]$source <- file$name
-              }
-            }
-            
-            
-            # HTML ----------
+            text <- paste(pdftools::pdf_text(file$datapath), collapse = "\n")
           } else if (file_extension %in% c("htm", "html"))  {
-            
-            try_checkhtml <- try(suppressMessages(
-              statcheck::checkHTML(file$datapath, OneTailedTxt = input$one_tail)
-            ))
-            
-            if("try-error" %in% class(try_checkhtml)){
-              statcheck_results[[i]] <- NULL
-            } else {
-              statcheck_results[[i]] <- try_checkhtml
-              
-              if(!is.null(try_checkhtml)){
-                # add filename to source column
-                statcheck_results[[i]]$source <- file$name
-              }
-            }
-            
-            
-            # DOCX -----------
+            html <- paste(readLines(file$datapath), collapse = "\n")
+            text <- htm2txt::htm2txt(html)
           } else if (file_extension %in% c("doc", "docx")) {
-            
-            # for a word document, there is no default statcheck function yet
-            # we first need to extract the plain text and then run the basic
-            # statcheck function
-            
             word <- readtext::readtext(file$datapath)
             text <- word$text
-            
-            # store filename to return in final dataframe
-            names(text) <- file$name
-            
-            # run statcheck in a try() environment to avoid the app from breaking
-            # if a paper throws an error
-            try_statcheck <- try(suppressMessages(
-              statcheck::statcheck(text, OneTailedTxt = input$one_tail)
-            ))
-            
-            if("try-error" %in% class(try_statcheck)){
-              statcheck_results[[i]] <- NULL
-            } else {
-              statcheck_results[[i]] <- try_statcheck
-            }
           }
           
+          # store filename to return in final dataframe
+          names(text) <- file$name
+          
+          # run statcheck in a try() environment to avoid the app from breaking
+          # if a paper throws an error
+          try_statcheck <- try(suppressMessages(
+            statcheck::statcheck(text, OneTailedTxt = input$one_tail)
+          ))
+          
+          if("try-error" %in% class(try_statcheck)){
+            statcheck_results[[i]] <- NULL
+          } else {
+            statcheck_results[[i]] <- try_statcheck
+          }
         }
         
         res <- do.call(rbind, statcheck_results)
