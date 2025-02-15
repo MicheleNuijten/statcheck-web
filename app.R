@@ -189,8 +189,20 @@ server <- function(input, output) {
             
             # HTML ----------
           } else if (file_extension %in% c("htm", "html"))  {
-            html <- paste(readLines(file$datapath), collapse = "\n")
-            text <- htm2txt::htm2txt(html)
+            
+            try_checkhtml <- try(suppressMessages(
+              checkHTML(file$datapath, OneTailedTxt = input$one_tail)
+            ))
+            
+            if("try-error" %in% class(try_checkhtml)){
+              statcheck_results[[i]] <- NULL
+            } else {
+              statcheck_results[[i]] <- try_checkhtml
+              
+              # add filename to source column
+              statcheck_results[[i]]$source <- file$name
+            }
+            
             
             # DOCX -----------
           } else if (file_extension %in% c("doc", "docx")) {
