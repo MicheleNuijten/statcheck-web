@@ -45,7 +45,7 @@ ui <- navbarPage(
                     fileInput(inputId = "files", 
                               label = "Upload files (pdf, html, or docx):",
                               multiple = TRUE,
-                              accept = c("pdf", "htm", "html", "doc", "docx")
+                              accept = c("pdf", "htm", "html", "docx")
                     ),
                     h5("Settings:", class = "settings"),
                     checkboxInput("one_tail",
@@ -123,7 +123,7 @@ server <- function(input, output) {
     values$error <- NULL
     
     # Validate file types
-    valid_extensions <- c("pdf", "htm", "html", "doc", "docx")
+    valid_extensions <- c("pdf", "htm", "html", "docx")
     invalid_files <- !tools::file_ext(files$name) %in% valid_extensions
     if (any(invalid_files)) {
       values$error <- "Please select only PDF, HTML, or Word files."
@@ -174,7 +174,7 @@ server <- function(input, output) {
           } else if (file_extension %in% c("htm", "html"))  {
             html <- paste(readLines(file$datapath), collapse = "\n")
             text <- htm2txt::htm2txt(html)
-          } else if (file_extension %in% c("doc", "docx")) {
+          } else if (file_extension == "docx") {
             word <- readtext::readtext(file$datapath)
             text <- word$text
           }
