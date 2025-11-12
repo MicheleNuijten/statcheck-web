@@ -1,6 +1,15 @@
 ---
 title: "statcheck on the web // report"
-output: pdf_document
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    toc: false
+    number_sections: false
+header-includes:
+  - \usepackage{fontspec}
+  - \setmainfont{Arial}
+  - \setsansfont{Calibri}
+  - \setmonofont{Consolas}
 params:
   results: NULL
   file_name: NULL

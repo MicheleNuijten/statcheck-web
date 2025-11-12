@@ -300,7 +300,6 @@ server <- function(input, output) {
                                       date = date,
                                       statcheck_version = statcheck_version,
                                       one_tailed = one_tailed),  
-                        output_format = "pdf_document",
                         envir = new.env(parent = globalenv()))
     }
   )
