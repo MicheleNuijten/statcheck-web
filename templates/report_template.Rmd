@@ -1,8 +1,6 @@
 ---
 title: "statcheck on the web // report"
-output: 
-  pdf_document:
-    latex_engine: xelatex
+output: pdf_document
 params:
   results: NULL
   file_name: NULL
