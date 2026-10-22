@@ -168,30 +168,67 @@ server <- function(input, output) {
           # Check whether the user supplied a PDF, HTML, or MS Word file
           file_extension <- tools::file_ext(file$name)
           
-          # Extract text from the file, depending on the file extension
+          # Different file types require different strategies to run statcheck
+          # the pdf and html to text conversions are based on the custom functions
+          # in the statcheck R package, that takes into account things like
+          # text presented in columns and deals with some known weird character
+          # conversions. The docx to text conversion is based on an external
+          # package & function readtext
+          
+          # PDF -----------
           if (file_extension == "pdf") {
-            text <- paste(pdftools::pdf_text(file$datapath), collapse = "\n")
+            
+            try_checkpdf <- try(suppressMessages(
+              statcheck::checkPDF(file$datapath, OneTailedTxt = input$one_tail)
+            ))
+            
+            if("try-error" %in% class(try_checkpdf)){
+              statcheck_results[[i]] <- NULL
+            } else {
+              statcheck_results[[i]] <- try_checkpdf
+              
+              if(!is.null(try_checkpdf)){
+                # add filename to source column
+                statcheck_results[[i]]$source <- file$name
+              }
+            }
+            
+            # HTML ----------
           } else if (file_extension %in% c("htm", "html"))  {
-            html <- paste(readLines(file$datapath), collapse = "\n")
-            text <- htm2txt::htm2txt(html)
+            
+            try_checkhtml <- try(suppressMessages(
+              statcheck::checkHTML(file$datapath, OneTailedTxt = input$one_tail)
+            ))
+            
+            if("try-error" %in% class(try_checkhtml)){
+              statcheck_results[[i]] <- NULL
+            } else {
+              statcheck_results[[i]] <- try_checkhtml
+              
+              if(!is.null(try_checkhtml)){
+                # add filename to source column
+                statcheck_results[[i]]$source <- file$name
+              }
+            }
+            
+            # DOCX -----------
           } else if (file_extension %in% c("doc", "docx")) {
+            
             word <- readtext::readtext(file$datapath)
             text <- word$text
-          }
-          
-          # store filename to return in final dataframe
-          names(text) <- file$name
-          
-          # run statcheck in a try() environment to avoid the app from breaking
-          # if a paper throws an error
-          try_statcheck <- try(suppressMessages(
-            statcheck::statcheck(text, OneTailedTxt = input$one_tail)
-          ))
-          
-          if("try-error" %in% class(try_statcheck)){
-            statcheck_results[[i]] <- NULL
-          } else {
-            statcheck_results[[i]] <- try_statcheck
+            
+            # store filename to return in final dataframe
+            names(text) <- file$name
+            
+            try_statcheck <- try(suppressMessages(
+              statcheck::statcheck(text, OneTailedTxt = input$one_tail)
+            ))
+            
+            if("try-error" %in% class(try_statcheck)){
+              statcheck_results[[i]] <- NULL
+            } else {
+              statcheck_results[[i]] <- try_statcheck
+            }
           }
         }
         
