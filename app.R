@@ -65,6 +65,7 @@ ui <- navbarPage(
                     conditionalPanel(
                       condition = "!output.error",
                       DT::dataTableOutput("table"),
+                      tags$div(class = "text-warning fw-bold", textOutput("file_notes")),
                       textOutput("sessionInfo")
                     ),
                     
@@ -110,10 +111,11 @@ ui <- navbarPage(
 
 server <- function(input, output) {
   # Create variables to store statcheck results and error status
-  values <- reactiveValues(res = NULL, error = NULL)
+  values <- reactiveValues(res = NULL, error = NULL, notes = NULL)
   
   # Render the error message
   output$error <- renderText(values$error)
+  output$file_notes <- renderText(values$notes)
   outputOptions(output, "error", suspendWhenHidden = FALSE)
   
   observe({
@@ -156,6 +158,8 @@ server <- function(input, output) {
       
       # create empty list to store results of separate files
       statcheck_results <- list() 
+      unreadable <- character(0)  # files that could not be read
+      no_results <- character(0)  # files read fine, but without results
       
       # Use progress indicator
       withProgress(message = 'Processing files...', value = 0, {
@@ -168,32 +172,39 @@ server <- function(input, output) {
           # Check whether the user supplied a PDF, HTML, or MS Word file
           file_extension <- tools::file_ext(file$name)
           
-          # Extract text from the file, depending on the file extension
-          if (file_extension == "pdf") {
-            text <- paste(pdftools::pdf_text(file$datapath), collapse = "\n")
-          } else if (file_extension %in% c("htm", "html"))  {
-            html <- paste(readLines(file$datapath), collapse = "\n")
-            text <- htm2txt::htm2txt(html)
-          } else if (file_extension %in% c("doc", "docx")) {
-            word <- readtext::readtext(file$datapath)
-            text <- word$text
-          }
+          # Different file types require different strategies to run statcheck
+          out <- try(suppressMessages(
+            if (file_extension == "pdf") {
+              statcheck::checkPDF(file$datapath, OneTailedTxt = input$one_tail)
+            } else if (file_extension %in% c("htm", "html")) {
+              statcheck::checkHTML(file$datapath, OneTailedTxt = input$one_tail)
+            } else {
+              # no statcheck function for Word yet: extract text first
+              text <- readtext::readtext(file$datapath)$text
+              statcheck::statcheck(text, OneTailedTxt = input$one_tail)
+            }
+          ), silent = TRUE)
           
-          # store filename to return in final dataframe
-          names(text) <- file$name
-          
-          # run statcheck in a try() environment to avoid the app from breaking
-          # if a paper throws an error
-          try_statcheck <- try(suppressMessages(
-            statcheck::statcheck(text, OneTailedTxt = input$one_tail)
-          ))
-          
-          if("try-error" %in% class(try_statcheck)){
-            statcheck_results[[i]] <- NULL
+          if (inherits(out, "try-error")) {
+            unreadable <- c(unreadable, file$name)
+          } else if (is.null(out)) {
+            no_results <- c(no_results, file$name)
           } else {
-            statcheck_results[[i]] <- try_statcheck
+            out$source <- file$name
+            statcheck_results[[i]] <- out
           }
+          
         }
+        
+        file_notes <- c(
+          if (length(unreadable) > 0) paste0(
+            "Could not read: ", paste(unreadable, collapse = ", "),
+            ". The file may be damaged, password-protected, or a scanned image without text."),
+          if (length(no_results) > 0) paste0(
+            "No statistical results found in: ", paste(no_results, collapse = ", "),
+            ". See the FAQ page for common reasons why statcheck doesn't detect results.")
+        )
+        values$notes <- if (length(file_notes) > 0) paste(file_notes, collapse = " ") else NULL
         
         res <- do.call(rbind, statcheck_results)
         
@@ -211,8 +222,7 @@ server <- function(input, output) {
         
         # Check whether any results were found
         if (is.null(res)) {
-          values$error <- "No results found. See the FAQ page for some common 
-          reasons why statcheck doesn't detect some results."
+          values$error <- paste(file_notes, collapse = " ")
           
           # store empty df in res, in order to generate "empty" statcheck report
           values$res <- data.frame()
